@@ -1,4 +1,4 @@
-import { Container, Graphics, DisplayObject, TextStyle, Text } from 'pixi.js';
+import { Container, DisplayObject, Graphics, Text, TextStyle } from 'pixi.js';
 
 export class Hud extends DisplayObject {
   public object: Container;
@@ -19,11 +19,11 @@ export class Hud extends DisplayObject {
   }
   public drawText(x: number, y: number, text: string, textSize: number, color: number): void {
     const style = new TextStyle({
-      fontFamily: 'Futura',
-      fontSize: textSize,
-      fill: color,
       dropShadow: true,
       dropShadowDistance: 1,
+      fill: color,
+      fontFamily: 'Futura',
+      fontSize: textSize,
     });
     const message = new Text(text, style);
     message.x = x;

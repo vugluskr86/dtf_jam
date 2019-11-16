@@ -73,9 +73,9 @@ class Game {
     const hud = new Hud();
     // create progressbar
     hud.init();
-    //black
+    // black
     hud.drawBar(20, 10, 0x000000, 128, 8);
-    //red
+    // red
     hud.drawBar(20, 10, 0xff3300, 56, 8);
 
     // black
@@ -83,7 +83,7 @@ class Game {
     // green
     hud.drawBar(20, 20, 0x00ff00, 26, 8);
 
-    //text
+    // text
     hud.drawText(20, 30, 'Test text', 12, 0x00ff00);
 
     this.app.stage.addChild(hud.object);
