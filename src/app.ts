@@ -1,7 +1,7 @@
 import { Application, Loader } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
-import { Character } from '@app/Character';
-import { IRoomViewSettings, Room } from '@app/Room';
+import { Character } from './app/Character';
+import { IRoomViewSettings, Room } from './app/Room';
 
 class Game {
   private app: Application;
