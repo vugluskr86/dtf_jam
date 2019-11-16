@@ -1,28 +1,32 @@
-import { Application, loader } from 'pixi.js';
+import { Application, Loader } from 'pixi.js';
 import { Character } from '@app/character.class';
 class Game {
   private app: Application;
+  private loader: Loader;
+
   constructor() {
     // instantiate app
     this.app = new Application({
-      width: 800,
+      backgroundColor: 0x1099bb, // light blue
       height: 600,
-      backgroundColor: 0x1099bb // light blue
+      width: 800
     });
+
+    this.loader = new Loader();
 
     // create view in DOM
     document.body.appendChild(this.app.view);
 
     // preload needed assets
-    loader.add('samir', '/assets/img/hero.png');
+    this.loader.add('samir', '/assets/img/hero.png');
 
     // then launch app
-    loader.load(this.setup.bind(this));
+    this.loader.load(this.setup.bind(this));
   }
 
-  setup(): void {
+  private setup(): void {
     // append hero
-    const hero = new Character(loader.resources['samir'].texture);
+    const hero = new Character(this.loader.resources['samir'].texture);
     const heroSprite = hero.sprite;
     this.app.stage.addChild(heroSprite);
     heroSprite.y = 300;
@@ -41,4 +45,6 @@ class Game {
   }
 }
 
+/* tslint:disable */
 new Game();
+/* tslint:enable */

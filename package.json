@@ -11,11 +11,11 @@
     "build": "webpack"
   },
   "dependencies": {
-    "pixi.js": "4.7.1"
+    "pixi.js": "5.0.0"
   },
   "devDependencies": {
     "@types/node": "9.6.0",
-    "@types/pixi.js": "4.7.2",
+    "@types/pixi.js": "5.0.0",
     "awesome-typescript-loader": "5.0.0-1",
     "clean-webpack-plugin": "0.1.19",
     "copy-webpack-plugin": "4.5.1",
@@ -26,6 +26,6 @@
     "typescript": "2.7.2",
     "webpack": "4.3.0",
     "webpack-cli": "2.0.13",
-    "webpack-dev-server": "3.1.1"
+    "webpack-dev-server": "3.1.10"
   }
 }
