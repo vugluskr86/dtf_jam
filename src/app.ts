@@ -1,9 +1,7 @@
 import { Application, Loader } from 'pixi.js';
-
 import { Viewport } from 'pixi-viewport';
-
 import { Character } from '@app/Character';
-import { Room } from '@app/Room';
+import { IRoomViewSettings, Room } from '@app/Room';
 
 class Game {
   private app: Application;
@@ -11,7 +9,11 @@ class Game {
   private viewport: Viewport;
 
   constructor() {
-    this.app = new Application({backgroundColor: 0x1099bb});
+    this.app = new Application({
+      backgroundColor: 0x1099bb,
+      height: 720,
+      width: 1280,
+    });
     document.body.appendChild(this.app.view);
 
     this.loader = new Loader();
@@ -21,7 +23,7 @@ class Game {
       screenHeight: 720,
       screenWidth: 1280,
       worldHeight: 2000,
-      worldWidth: 2000
+      worldWidth: 2000,
     });
 
     this.app.stage.addChild(this.viewport);
@@ -42,10 +44,10 @@ class Game {
 
   private setup(): void {
 
-    // room
-    const room = new Room(this.loader.resources['room'].texture);
-    const roomSprite = room.sprite;
-    this.viewport.addChild(roomSprite);
+    this.setupRooms({
+      paddingWidth: 10,
+      paddngHeight: 10,
+    });
 
     // append hero
     const hero = new Character(this.loader.resources['hero'].texture);
@@ -64,6 +66,20 @@ class Game {
         moveLeft = heroSprite.x <= 0;
       }
     });
+  }
+
+  private setupRooms(settings: IRoomViewSettings): void {
+    for (let x = 0; x < 10; x++) {
+      for (let y = 0; y < 10; y++) {
+        if (Math.random() < 0.5) {
+          const room = new Room(this.loader.resources['room'].texture);
+          const roomSprite = room.sprite;
+          this.viewport.addChild(roomSprite);
+          roomSprite.x = x * (roomSprite.width + settings.paddingWidth);
+          roomSprite.y = y * (roomSprite.height + settings.paddngHeight);
+        }
+      }
+    }
   }
 }
 

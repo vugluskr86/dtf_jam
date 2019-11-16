@@ -11,7 +11,7 @@
         "named-imports-order": "lowercase-last"
       }
     ],
-    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
     "typedef": [true, "call-signature", "parameter"],
     "quotemark": [true, "single"],
     "no-string-literal": false

@@ -7,3 +7,8 @@ export class Room {
     this.sprite = new Sprite(texture);
   }
 }
+
+export interface IRoomViewSettings {
+  paddingWidth: number;
+  paddngHeight: number;
+}
