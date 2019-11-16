@@ -1,9 +1,9 @@
 export enum eRoomColor {
-    RED,
-    GREEN,
-    GRAY,
-    BLACK,
-    YELLOW,
+    RED = 'red',
+    GREEN = 'green',
+    GRAY = 'gray',
+    BLACK = 'black',
+    YELLOW = 'yellow',
 }
 
 export enum eRoomType {

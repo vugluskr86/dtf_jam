@@ -2,11 +2,16 @@ import { Application, Loader } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 import { Character } from './app/Character';
 import { IRoomViewSettings, Room } from './app/Room';
+import { IRoomPrototype, eRoomColor, eRoomType } from '@models/Room';
+import { getRandomElementOfEnum } from '@app/Utils';
 
 class Game {
+
   private app: Application;
   private loader: Loader;
   private viewport: Viewport;
+
+  private roomViewSettings: IRoomViewSettings;
 
   constructor() {
     this.app = new Application({
@@ -38,16 +43,25 @@ class Game {
     this.loader.add('hero', '/assets/img/hero.png');
     this.loader.add('room', '/assets/img/room_empty.png');
 
+    const roomColors = Object.values(eRoomColor);
+    for (const colorIndex in roomColors) {
+      if (roomColors[colorIndex]) {
+        const colorName = roomColors[colorIndex];
+        this.loader.add(`room_${colorName}`, `/assets/img/rooms/${colorName}.png`);
+      }
+    }
+
     // then launch app
     this.loader.load(this.setup.bind(this));
+
+    this.roomViewSettings = {
+      paddingWidth: 10,
+      paddngHeight: 10,
+    };
   }
 
   private setup(): void {
-
-    this.setupRooms({
-      paddingWidth: 10,
-      paddngHeight: 10,
-    });
+    this.setupRooms();
 
     // append hero
     const hero = new Character(this.loader.resources['hero'].texture);
@@ -68,19 +82,29 @@ class Game {
     });
   }
 
-  private setupRooms(settings: IRoomViewSettings): void {
+  private setupRooms(): void {
     for (let x = 0; x < 10; x++) {
       for (let y = 0; y < 10; y++) {
         if (Math.random() < 0.5) {
-          const room = new Room(this.loader.resources['room'].texture);
-          const roomSprite = room.sprite;
-          this.viewport.addChild(roomSprite);
-          roomSprite.x = x * (roomSprite.width + settings.paddingWidth);
-          roomSprite.y = y * (roomSprite.height + settings.paddngHeight);
+          this.spawnRoom({
+            color: getRandomElementOfEnum(eRoomColor),
+            type: eRoomType.REGULAR,
+          }, x, y);
         }
       }
     }
   }
+
+  private spawnRoom(prot: IRoomPrototype, x: number, y: number): Room {
+    const resourceName: string = prot.color;
+    const room = new Room(this.loader.resources[`room_${resourceName}`].texture);
+    const roomSprite = room.sprite;
+    this.viewport.addChild(roomSprite);
+    roomSprite.x = x * (roomSprite.width + this.roomViewSettings.paddingWidth);
+    roomSprite.y = y * (roomSprite.height + this.roomViewSettings.paddngHeight);
+    return room;
+  }
+
 }
 
 /* tslint:disable */
