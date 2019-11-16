@@ -1,5 +1,7 @@
 import { Application, Loader } from 'pixi.js';
-import { Character } from '@app/character.class';
+import { Character } from '@app/Character';
+import { Room } from '@app/Room';
+
 class Game {
   private app: Application;
   private loader: Loader;
@@ -19,12 +21,19 @@ class Game {
 
     // preload needed assets
     this.loader.add('samir', '/assets/img/hero.png');
+    this.loader.add('room', '/assets/img/room_empty.png');
 
     // then launch app
     this.loader.load(this.setup.bind(this));
   }
 
   private setup(): void {
+
+    // room
+    const room = new Room(this.loader.resources['room'].texture);
+    const roomSprite = room.sprite;
+    this.app.stage.addChild(roomSprite);
+
     // append hero
     const hero = new Character(this.loader.resources['samir'].texture);
     const heroSprite = hero.sprite;
