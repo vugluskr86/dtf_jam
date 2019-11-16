@@ -1,0 +1,31 @@
+{
+  "name": "dtfjam",
+  "version": "5.0.1",
+  "author": "vugluskr86 <ivashkin.vasiliy@gmail.com>",
+  "description": "",
+  "main": "./index.html",
+  "scripts": {
+    "npm-reset": "rm -rf node_modules && npm cache verify && npm i",
+    "git-reset": "git reset HEAD --hard && git clean -fd && git fetch --all --tags --prune && git pull",
+    "start": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "dependencies": {
+    "pixi.js": "4.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "9.6.0",
+    "@types/pixi.js": "4.7.2",
+    "awesome-typescript-loader": "5.0.0-1",
+    "clean-webpack-plugin": "0.1.19",
+    "copy-webpack-plugin": "4.5.1",
+    "file-loader": "1.1.11",
+    "html-webpack-plugin": "3.1.0",
+    "tsconfig-paths-webpack-plugin": "3.0.2",
+    "tslint": "5.9.1",
+    "typescript": "2.7.2",
+    "webpack": "4.3.0",
+    "webpack-cli": "2.0.13",
+    "webpack-dev-server": "3.1.1"
+  }
+}
