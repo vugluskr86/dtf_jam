@@ -3,7 +3,8 @@ import { Container, DisplayObject, Graphics, Text, TextStyle } from 'pixi.js';
 export class Hud extends DisplayObject {
   public object: Container;
 
-  public init(): void {
+  constructor() {
+    super();
     this.object = new Container();
   }
 
@@ -17,6 +18,7 @@ export class Hud extends DisplayObject {
     bar.endFill();
     object.addChild(bar);
   }
+
   public drawText(x: number, y: number, text: string, textSize: number, color: number): void {
     const style = new TextStyle({
       dropShadow: true,

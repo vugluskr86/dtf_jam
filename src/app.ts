@@ -71,8 +71,7 @@ class Game {
 
     // add HUD
     const hud = new Hud();
-    // create progressbar
-    hud.init();
+
     // black
     hud.drawBar(20, 10, 0x000000, 128, 8);
     // red
