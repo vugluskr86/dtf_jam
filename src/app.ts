@@ -5,16 +5,23 @@ import { IRoomViewSettings, Room } from './app/Room';
 import { IRoomPrototype, eRoomColor, eRoomType } from '@models/Room';
 import { getRandomElementOfEnum } from '@app/Utils';
 import { Hud } from '@app/hud/Hud';
+import { Level } from '@models/Level';
 
 class Game {
   private app: Application;
   private loader: Loader;
   private viewport: Viewport;
   private hud: Hud;
-
   private roomViewSettings: IRoomViewSettings;
 
+  private level: Level;
+
   constructor() {
+    this.level = new Level();
+    this.level.build();
+
+    console.log(this.level);
+
     this.app = new Application({
       backgroundColor: 0x1099bb,
       height: 720,
@@ -95,23 +102,6 @@ class Game {
   }
 
   private setupRooms(): void {
-    /*
-    for (let x = 0; x < 10; x++) {
-      for (let y = 0; y < 10; y++) {
-        if (Math.random() < 0.5) {
-          this.spawnRoom(
-            {
-              color: getRandomElementOfEnum(eRoomColor),
-              type: eRoomType.REGULAR,
-            },
-            x,
-            y,
-          );
-        }
-      }
-    }
-   */
-
     this.spawnRoom(
       {
         color: getRandomElementOfEnum(eRoomColor),
