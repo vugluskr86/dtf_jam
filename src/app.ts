@@ -103,6 +103,7 @@ class Game {
   }
 
   private setupRooms(): void {
+    /*
     for (let x = 0; x < 10; x++) {
       for (let y = 0; y < 10; y++) {
         if (Math.random() < 0.5) {
@@ -117,15 +118,24 @@ class Game {
         }
       }
     }
+   */
+
+    this.spawnRoom(
+      {
+        color: getRandomElementOfEnum(eRoomColor),
+        type: eRoomType.REGULAR,
+      },
+      0,
+      0,
+    );
   }
 
   private spawnRoom(prot: IRoomPrototype, x: number, y: number): Room {
     const resourceName: string = prot.color;
     const room = new Room(this.loader.resources[`room_${resourceName}`].texture);
-    const roomSprite = room.sprite;
-    this.viewport.addChild(roomSprite);
-    roomSprite.x = x * (roomSprite.width + this.roomViewSettings.paddingWidth);
-    roomSprite.y = y * (roomSprite.height + this.roomViewSettings.paddngHeight);
+    this.viewport.addChild(room);
+    room.x = x * (room.width + this.roomViewSettings.paddingWidth);
+    room.y = y * (room.height + this.roomViewSettings.paddngHeight);
     return room;
   }
 }

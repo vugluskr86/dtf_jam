@@ -1,10 +1,17 @@
 import { Sprite, Texture } from 'pixi.js';
 
-export class Room {
-  public sprite: Sprite;
-
+export class Room extends Sprite {
   constructor(public texture: Texture) {
-    this.sprite = new Sprite(texture);
+    super(texture);
+    this.interactive = true;
+
+    this.on('click', (e: any) => {
+      this.onClick(e);
+    });
+  }
+
+  private onClick(e: any): void {
+    console.log('Room click', e);
   }
 }
 
