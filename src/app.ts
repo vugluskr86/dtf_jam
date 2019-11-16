@@ -4,12 +4,13 @@ import { Character } from './app/Character';
 import { IRoomViewSettings, Room } from './app/Room';
 import { IRoomPrototype, eRoomColor, eRoomType } from '@models/Room';
 import { getRandomElementOfEnum } from '@app/Utils';
-import { Hud } from '@app/Hud';
+import { Hud } from '@app/hud/Hud';
 
 class Game {
   private app: Application;
   private loader: Loader;
   private viewport: Viewport;
+  private hud: Hud;
 
   private roomViewSettings: IRoomViewSettings;
 
@@ -70,24 +71,15 @@ class Game {
     heroSprite.y = 300;
 
     // add HUD
-    const hud = new Hud();
+    this.hud = new Hud();
+    this.app.stage.addChild(this.hud);
 
-    // black
-    hud.drawBar(20, 10, 0x000000, 128, 8);
-    // red
-    hud.drawBar(20, 10, 0xff3300, 56, 8);
-
-    // black
-    hud.drawBar(20, 20, 0x000000, 128, 8);
-    // green
-    hud.drawBar(20, 20, 0x00ff00, 26, 8);
-
-    // text
-    hud.drawText(20, 30, 'Test text', 12, 0x00ff00);
-
-    this.app.stage.addChild(hud.object);
-
-    // END add HUD
+    this.hud.update({
+      hp: 0.2,
+      hunger: 0,
+      maxHp: 0,
+      mind: 0.5,
+    });
 
     //  animate hero
     let moveLeft = true;
