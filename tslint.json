@@ -12,6 +12,8 @@
       }
     ],
     "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
-    "typedef": [true, "call-signature", "parameter"]
+    "typedef": [true, "call-signature", "parameter"],
+    "quotemark": [true, "single"],
+    "no-string-literal": false
   }
 }
