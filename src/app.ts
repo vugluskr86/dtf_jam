@@ -4,9 +4,9 @@ import { Character } from './app/Character';
 import { IRoomViewSettings, Room } from './app/Room';
 import { IRoomPrototype, eRoomColor, eRoomType } from '@models/Room';
 import { getRandomElementOfEnum } from '@app/Utils';
+import { Hud } from '@app/Hud';
 
 class Game {
-
   private app: Application;
   private loader: Loader;
   private viewport: Viewport;
@@ -69,6 +69,24 @@ class Game {
     this.viewport.addChild(heroSprite);
     heroSprite.y = 300;
 
+    // add HUD
+    const hud = new Hud();
+    // create progressbar
+    hud.init();
+    // black
+    hud.drawBar(20, 8, 0x000000, 128, 8);
+    // red
+    hud.drawBar(20, 8, 0xff3300, 56, 8);
+
+    // black
+    hud.drawBar(20, 20, 0x000000, 128, 8);
+    // green
+    hud.drawBar(20, 20, 0x00ff00, 26, 8);
+
+    this.app.stage.addChild(hud.object);
+
+    // END add HUD
+
     //  animate hero
     let moveLeft = true;
     this.app.ticker.add(() => {
@@ -86,10 +104,14 @@ class Game {
     for (let x = 0; x < 10; x++) {
       for (let y = 0; y < 10; y++) {
         if (Math.random() < 0.5) {
-          this.spawnRoom({
-            color: getRandomElementOfEnum(eRoomColor),
-            type: eRoomType.REGULAR,
-          }, x, y);
+          this.spawnRoom(
+            {
+              color: getRandomElementOfEnum(eRoomColor),
+              type: eRoomType.REGULAR,
+            },
+            x,
+            y,
+          );
         }
       }
     }
@@ -104,7 +126,6 @@ class Game {
     roomSprite.y = y * (roomSprite.height + this.roomViewSettings.paddngHeight);
     return room;
   }
-
 }
 
 /* tslint:disable */
