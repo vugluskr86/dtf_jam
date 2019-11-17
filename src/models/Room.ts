@@ -145,8 +145,10 @@ export class RoomModel {
 
       if (this.level.character.hp <= 0) {
         this.level.character.hp = 0;
-        toastr.warning(`Вы умерли`);
-        window.location.reload();
+        toastr.warning(`Вы умерли. Игра будет перезапущена через 2 секунды`);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
 
       this.normalizeUserParams();
