@@ -1,0 +1,38 @@
+{
+    "_data": {
+        "potions": [{
+                "name": "heal",
+                "hp": 1,
+                "price": 1
+            },
+            {
+                "name": "anti_stress",
+                "mind": 1,
+                "price": 1
+            }
+        ],
+        "treasures": [{
+            "name": "coin",
+            "price": 1
+        }, {
+            "name": "coins",
+            "price": 5
+        }, {
+            "name": "gold_pile",
+            "price": 100
+        }, {
+            "name": "Bronze Artifact",
+            "maxHp": 5,
+            "price": 150
+        }, {
+            "name": "Silver Artifact",
+            "maxMind": 5,
+            "price": 300
+        }, {
+            "name": "Gold Artifact",
+            "maxHp": 3,
+            "maxMind": 3,
+            "price": 500
+        }]
+    }
+}
