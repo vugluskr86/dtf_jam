@@ -1,7 +1,7 @@
 import { Application, Loader, Texture } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
-import { Character } from './app/Character';
-import { IRoomViewSettings, Room } from './app/Room';
+import { Character } from './app/entities/Character';
+import { IRoomViewSettings, Room } from './app/entities/Room';
 import { RoomModel, eRoomColor } from '@models/Room';
 import { Hud } from '@app/hud/Hud';
 import { Level } from '@models/Level';
@@ -47,7 +47,9 @@ class Game {
 
     // preload needed assets
     this.loader.add('hero', '/assets/img/hero.png');
-    this.loader.add('room', '/assets/img/room_empty.png');
+    this.loader.add('data_items', '/assets/data/items.json');
+    this.loader.add('data_actors', '/assets/data/actors.json');
+    // this.loader.add('data_rooms', '/assets/data/rooms.json');
 
     const roomColors = Object.values(eRoomColor);
     for (const colorIndex in roomColors) {
@@ -56,6 +58,10 @@ class Game {
         this.loader.add(`room_${colorName}`, `/assets/img/rooms/${colorName}.png`);
       }
     }
+
+    this.loader.once('complete', () => {
+      this.setup();
+    });
 
     // then launch app
     this.loader.load(this.setup.bind(this));
@@ -71,6 +77,8 @@ class Game {
     this.setupCharacter();
     this.setupHUD();
 
+    console.log(this.loader.resources['data_items'].data);
+
     /*
     //  animate hero
     let moveLeft = true;
@@ -83,7 +91,7 @@ class Game {
         moveLeft = heroSprite.x <= 0;
       }
     });
-*/
+    */
   }
 
   private setupHUD(): void {
