@@ -42,6 +42,8 @@ class Game {
       worldWidth: 2000,
     });
 
+    this.viewport.sortableChildren = true;
+
     this.app.stage.addChild(this.viewport);
 
     this.viewport
@@ -165,7 +167,7 @@ class Game {
 
   private setupCharacter(): void {
     this.character = new Character(this.loader.resources['hero'].texture);
-
+    this.character.zIndex = 10;
     this.characterModel = {
       hp: 100,
       hunger: 100,
@@ -183,11 +185,19 @@ class Game {
 
     this.level.on('move', (model: RoomModel) => {
       this.moveCharaterToRoom(model);
+      this.level.generateNeighbors(model);
       this.hud.update(this.characterModel);
     });
 
     this.level.on('forceUpdate', () => {
       this.hud.update(this.characterModel);
+    });
+
+    this.level.on('generate', (data: any) => {
+      this.spawnRoom(data.room);
+      if (data.door) {
+        this.spawnDoor(data.door);
+      }
     });
 
     this.level.moveCharacter(this.level.roomsList[0]);
