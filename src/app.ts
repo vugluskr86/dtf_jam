@@ -158,6 +158,7 @@ class Game {
 
     // FIXME: Zorder
     this.viewport.addChild(this.character);
+    this.viewport.follow(this.character);
   }
 
   private spawnRoom(model: RoomModel): Room {
