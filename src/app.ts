@@ -1,11 +1,11 @@
-import { Application, Loader } from 'pixi.js';
+import { Application, Loader, Texture } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 import { Character } from './app/Character';
 import { IRoomViewSettings, Room } from './app/Room';
-import { IRoomPrototype, eRoomColor, eRoomType } from '@models/Room';
-import { getRandomElementOfEnum } from '@app/Utils';
+import { RoomModel, eRoomColor } from '@models/Room';
 import { Hud } from '@app/hud/Hud';
 import { Level } from '@models/Level';
+import './app/styles';
 
 class Game {
   private app: Application;
@@ -13,17 +13,15 @@ class Game {
   private viewport: Viewport;
   private hud: Hud;
   private roomViewSettings: IRoomViewSettings;
-
+  private character: Character;
   private level: Level;
 
   constructor() {
     this.level = new Level();
     this.level.build();
 
-    console.log(this.level);
-
     this.app = new Application({
-      backgroundColor: 0x1099bb,
+      backgroundColor: 0x0d0d0d,
       height: 720,
       width: 1280,
     });
@@ -70,24 +68,10 @@ class Game {
 
   private setup(): void {
     this.setupRooms();
+    this.setupCharacter();
+    this.setupHUD();
 
-    // append hero
-    const hero = new Character(this.loader.resources['hero'].texture);
-    const heroSprite = hero.sprite;
-    this.viewport.addChild(heroSprite);
-    heroSprite.y = 300;
-
-    // add HUD
-    this.hud = new Hud();
-    this.app.stage.addChild(this.hud);
-
-    this.hud.update({
-      hp: 0.2,
-      hunger: 0,
-      maxHp: 0,
-      mind: 0.5,
-    });
-
+    /*
     //  animate hero
     let moveLeft = true;
     this.app.ticker.add(() => {
@@ -99,26 +83,55 @@ class Game {
         moveLeft = heroSprite.x <= 0;
       }
     });
+*/
+  }
+
+  private setupHUD(): void {
+    // add HUD
+    this.hud = new Hud();
+    this.app.stage.addChild(this.hud);
+
+    this.hud.update({
+      hp: 0.2,
+      hunger: 0,
+      maxHp: 0,
+      mind: 0.5,
+    });
+  }
+
+  private setupCharacter(): void {
+    // append hero
+    this.character = new Character(this.loader.resources['hero'].texture);
+    this.viewport.addChild(this.character);
+
+    this.level.on('move', (model: RoomModel) => {
+      this.moveCharaterToRoom(model);
+    });
+
+    this.level.moveCharacter(this.level.roomsList[0]);
   }
 
   private setupRooms(): void {
-    this.spawnRoom(
-      {
-        color: getRandomElementOfEnum(eRoomColor),
-        type: eRoomType.REGULAR,
-      },
-      0,
-      0,
-    );
+    this.level.roomsList.forEach((room: RoomModel) => {
+      this.spawnRoom(room);
+    });
   }
 
-  private spawnRoom(prot: IRoomPrototype, x: number, y: number): Room {
-    const resourceName: string = prot.color;
-    const room = new Room(this.loader.resources[`room_${resourceName}`].texture);
+  private spawnRoom(model: RoomModel): Room {
+    const resourceName: string = model.prototype.color;
+    const texture: Texture = this.loader.resources[`room_${resourceName}`].texture;
+    const room = new Room(texture, model);
     this.viewport.addChild(room);
-    room.x = x * (room.width + this.roomViewSettings.paddingWidth);
-    room.y = y * (room.height + this.roomViewSettings.paddngHeight);
+    room.x = model.x * (Room.SPRITE_WIDTH + this.roomViewSettings.paddingWidth);
+    room.y = model.y * (Room.SPRITE_HIGHT + this.roomViewSettings.paddngHeight);
     return room;
+  }
+
+  private moveCharaterToRoom(model: RoomModel): void {
+    this.character.x =
+      model.x * (Room.SPRITE_WIDTH + this.roomViewSettings.paddingWidth) + Room.SPRITE_WIDTH / 2;
+    this.character.y =
+      model.y * (Room.SPRITE_HIGHT + this.roomViewSettings.paddngHeight) + Room.SPRITE_HIGHT / 1.2;
   }
 }
 

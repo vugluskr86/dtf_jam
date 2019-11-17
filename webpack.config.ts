@@ -1,4 +1,3 @@
-
 /* tslint:disable */
 const path = require('path');
 const webpack = require('webpack');
@@ -27,6 +26,10 @@ module.exports = {
         test: /\.(png|svg|jpg|gif)$/,
         use: 'file-loader',
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   output: {
@@ -43,7 +46,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.css'],
     plugins: [
       new TsconfigPathsPlugin({
         configFile: './tsconfig.json',

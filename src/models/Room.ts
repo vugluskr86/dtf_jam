@@ -1,3 +1,5 @@
+import { Level } from './Level';
+
 export enum eRoomColor {
   RED = 'red',
   GREEN = 'green',
@@ -30,9 +32,10 @@ export class RoomModel {
   private flatIndex: number;
 
   constructor(
-    private readonly prototype: IRoomPrototype,
-    private readonly x: number,
-    private readonly y: number,
+    public readonly level: Level,
+    public readonly prototype: IRoomPrototype,
+    public readonly x: number,
+    public readonly y: number,
   ) {
     this.flatIndex = this.x + RoomModel.MAX_ROOM_WIDTH * this.y;
   }
@@ -47,5 +50,11 @@ export class RoomModel {
 
   get type(): eRoomType {
     return this.prototype.type;
+  }
+
+  public onIntreact(): void {
+    if (this.level.isNeighborsWithCurrent(this)) {
+      this.level.moveCharacter(this);
+    }
   }
 }

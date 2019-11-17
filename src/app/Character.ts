@@ -1,11 +1,9 @@
 import { Sprite, Texture } from 'pixi.js';
 
-export class Character {
-  public sprite: Sprite;
-
+export class Character extends Sprite {
   constructor(public texture: Texture) {
-    this.sprite = new Sprite(texture);
-    this.sprite.anchor.y = 0.5;
-    this.sprite.anchor.x = 0.5;
+    super(texture);
+    this.anchor.y = 0.5;
+    this.anchor.x = 0.5;
   }
 }
