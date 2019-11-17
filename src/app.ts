@@ -128,6 +128,7 @@ class Game {
       mind: 200,
       maxMind: 200,
       moveCount: 0,
+      coins: 0,
     };
 
     this.level = new Level(this.characterModel);

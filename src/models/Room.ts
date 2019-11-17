@@ -1,6 +1,7 @@
 import { Level } from './Level';
 import { eActorTypes } from '@app/entities/Actor';
 import { randomInt } from '@app/Utils';
+import * as toastr from 'toastr';
 
 export enum eRoomColor {
   RED = 'red',
@@ -60,34 +61,70 @@ export class RoomModel {
     this.actors.push(type);
   }
 
+  public getTrap(): eActorTypes {
+    return this.actors.find((type: eActorTypes) => {
+      return [eActorTypes.TRAP_GAS, eActorTypes.TRAP_MAGIC, eActorTypes.TRAP_SPEAR].includes(type);
+    });
+  }
+
+  public getMonster(): eActorTypes {
+    return this.actors.find((type: eActorTypes) => {
+      return type === eActorTypes.MONSTER;
+    });
+  }
+
   public onIntreact(): void {
     if (this.level.isPass(this)) {
+      if (this.level.current.getMonster()) {
+        const isEsacpe: boolean = Math.random() > 0.5;
+        if (!isEsacpe) {
+          const dMind: number = randomInt(1, 3);
+          const dHp: number = randomInt(5, 10);
+          this.level.character.hp -= dHp;
+          this.level.character.mind -= dMind;
+          toastr.warning(
+            `Вам не удалось сбежать от монстра. Здоровье: -${dHp} Рассудок: -${dMind}`,
+          );
+          return;
+        } else {
+          const dMind: number = randomInt(5, 10);
+          const dHp: number = randomInt(1, 3);
+          this.level.character.hp -= dHp;
+          this.level.character.mind -= dMind;
+          toastr.warning(`Вы успещно сбежали от монстра. Здоровье: -${dHp} Рассудок: -${dMind}`);
+        }
+      }
+
       this.level.moveCharacter(this);
 
-      this.level.character.mind -= randomInt(1, 3);
-      this.level.character.hunger -= randomInt(1, 3);
+      const dMindNextRoom: number = randomInt(1, 3);
+      const dHungerNextRoom: number = randomInt(1, 3);
+
+      this.level.character.mind -= dMindNextRoom;
+      this.level.character.hunger -= dHungerNextRoom;
+
+      toastr.warning(
+        `Вы перешли в другую комнату. Сытость: -${dHungerNextRoom} Рассудок: -${dMindNextRoom}`,
+      );
 
       if (this.level.character.hunger <= 0) {
         this.level.character.hunger = 0;
         this.level.character.hp--;
       }
 
-      const trap: eActorTypes = this.actors.find((type: eActorTypes) => {
-        return [eActorTypes.TRAP_GAS, eActorTypes.TRAP_MAGIC, eActorTypes.TRAP_SPEAR].includes(
-          type,
-        );
-      });
+      const trap: eActorTypes = this.getTrap();
 
       if (trap) {
-        this.level.character.hp -= randomInt(5, 10);
+        const dtTrapHp: number = randomInt(5, 10);
+        toastr.warning(`При путешествии вы попали в ловушку. Здоровье: -${dtTrapHp}`);
+        this.level.character.hp -= dtTrapHp;
       }
 
-      const monster: eActorTypes = this.actors.find((type: eActorTypes) => {
-        return type === eActorTypes.MONSTER;
-      });
-
+      const monster: eActorTypes = this.getMonster();
       if (monster) {
-        this.level.character.mind -= randomInt(3, 7);
+        const dtMonsterHp: number = randomInt(3, 7);
+        toastr.warning(`При путешествии монстр ударил вас. Здоровье: -${dtMonsterHp}`);
+        this.level.character.mind -= dtMonsterHp;
       }
 
       if (this.level.character.mind <= 0) {
@@ -96,7 +133,7 @@ export class RoomModel {
 
       if (this.level.character.hp <= 0) {
         this.level.character.hp = 0;
-        // DIE
+        toastr.warning(`Вы умерли`);
         window.location.reload();
       }
 
@@ -107,31 +144,47 @@ export class RoomModel {
 
   public onInteractActor(actor: eActorTypes): void {
     this.level.character.mind--;
+
+    toastr.warning(`Вы произвели дейтсвие: Рассудок -1`);
+
+    const rand37: number = randomInt(3, 7);
+    const rand15: number = randomInt(1, 5);
+
     switch (actor) {
       case eActorTypes.ALTAR_ALL: {
-        this.level.character.mind += randomInt(3, 7);
-        this.level.character.hp += randomInt(3, 7);
+        this.level.character.mind += rand37;
+        this.level.character.hp += rand37;
+        toastr.warning(
+          `Алтарь восполняет ваше состояние: Здоровье: -${rand37} Рассудок: -${rand37}`,
+        );
         break;
       }
       case eActorTypes.ALTAR_MIND: {
-        this.level.character.mind += randomInt(3, 7);
+        this.level.character.mind += rand37;
+        toastr.warning(`Алтарь восполняет ваше состояние: Рассудок: -${rand37}`);
         break;
       }
       case eActorTypes.ALTAR_HP: {
-        this.level.character.hp += randomInt(3, 7);
+        this.level.character.hp += rand37;
+        toastr.warning(`Алтарь восполняет ваше состояние: Здоровье: -${rand37}`);
         break;
       }
       case eActorTypes.FOUNTAIN_ALL: {
-        this.level.character.mind += randomInt(1, 5);
-        this.level.character.hp += randomInt(1, 5);
+        this.level.character.mind += rand15;
+        this.level.character.hp += rand15;
+        toastr.warning(
+          `Фонтан восполняет ваше состояние: Здоровье: -${rand15} Рассудок: -${rand15}`,
+        );
         break;
       }
       case eActorTypes.FOUNTAIN_HP: {
-        this.level.character.hp += randomInt(1, 5);
+        this.level.character.hp += rand15;
+        toastr.warning(`Фонтан восполняет ваше состояние: Рассудок: -${rand15}`);
         break;
       }
       case eActorTypes.FOUNTAIN_MIND: {
-        this.level.character.mind += randomInt(1, 5);
+        this.level.character.mind += rand15;
+        toastr.warning(`Фонтан восполняет ваше состояние: Рассудок: -${rand15}`);
         break;
       }
       case eActorTypes.TRAP_GAS: {

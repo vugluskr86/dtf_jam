@@ -10,4 +10,5 @@ export interface ICharacterModel {
   inventoty: [eItemTypes, eItemTypes, eItemTypes, eItemTypes];
 
   moveCount: number;
+  coins: number;
 }

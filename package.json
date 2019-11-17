@@ -11,15 +11,17 @@
     "build": "webpack"
   },
   "dependencies": {
+    "@types/toastr": "^2.1.37",
     "pixi-filters": "^3.0.3",
     "pixi-viewport": "^4.3.3",
-    "pixi.js": "5.0.0"
+    "pixi.js": "5.0.0",
+    "toastr": "^2.1.4"
   },
   "devDependencies": {
     "@types/clean-webpack-plugin": "^0.1.3",
     "@types/copy-webpack-plugin": "^5.0.0",
     "@types/html-webpack-plugin": "^3.2.1",
-    "@types/node": "12.12.8",
+    "@types/node": "^12.12.8",
     "@types/pixi.js": "5.0.0",
     "awesome-typescript-loader": "5.2.1",
     "clean-webpack-plugin": "0.1.19",
