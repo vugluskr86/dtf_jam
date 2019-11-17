@@ -1,5 +1,5 @@
 import { IRoomPrototype, RoomModel, eRoomColor, eRoomType } from './Room';
-import { /*ITreeNode, createTree,*/ getRandomElementOfEnum } from '@app/Utils';
+import { getRandomElementOfEnum } from '@app/Utils';
 import { EventEmitter } from 'events';
 import { IDoorModel } from './Door';
 

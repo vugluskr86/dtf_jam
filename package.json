@@ -11,6 +11,7 @@
     "build": "webpack"
   },
   "dependencies": {
+    "pixi-filters": "^3.0.3",
     "pixi-viewport": "^4.3.3",
     "pixi.js": "5.0.0"
   },

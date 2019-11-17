@@ -1,4 +1,5 @@
 import { Level } from './Level';
+import { eActorTypes } from '@app/entities/Actor';
 
 export enum eRoomColor {
   RED = 'red',
@@ -56,5 +57,9 @@ export class RoomModel {
     if (this.level.isPass(this)) {
       this.level.moveCharacter(this);
     }
+  }
+
+  public onInteractActor(actor: eActorTypes) {
+    console.log(actor);
   }
 }

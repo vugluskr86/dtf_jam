@@ -115,15 +115,12 @@ class Game {
   }
 
   private setupHUD(): void {
-    // add HUD
     this.hud = new Hud();
     this.app.stage.addChild(this.hud);
-
     this.hud.update(this.characterModel);
   }
 
   private setupCharacter(): void {
-    // append hero
     this.character = new Character(this.loader.resources['hero'].texture);
     this.viewport.addChild(this.character);
 
@@ -155,7 +152,7 @@ class Game {
   private spawnRoom(model: RoomModel): Room {
     const resourceName: string = model.prototype.color;
     const texture: Texture = this.loader.resources[`room_${resourceName}`].texture;
-    const room = new Room(texture, model);
+    const room = new Room(texture, model, this.level);
     this.viewport.addChild(room);
     room.x = model.x * (Room.SPRITE_WIDTH + this.roomViewSettings.paddingWidth);
     room.y = model.y * (Room.SPRITE_HIGHT + this.roomViewSettings.paddngHeight);
