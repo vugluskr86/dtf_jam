@@ -52,19 +52,19 @@ class Game {
       .decelerate();
 
     // preload needed assets
-    this.loader.add('hero', '/assets/img/hero.png');
-    this.loader.add('slot_vehumet', '/assets/img/slot_vehumet.png');
-    this.loader.add('closed_door', '/assets/img/closed_door.png');
-    this.loader.add('open_door', '/assets/img/open_door.png');
-    this.loader.add('stone_stairs_down', '/assets/img/stone_stairs_down.png');
-    this.loader.add('items', '/assets/data/items.json');
-    this.loader.add('actors', '/assets/data/actors.json');
+    this.loader.add('hero', 'assets/img/hero.png');
+    this.loader.add('slot_vehumet', 'assets/img/slot_vehumet.png');
+    this.loader.add('closed_door', 'assets/img/closed_door.png');
+    this.loader.add('open_door', 'assets/img/open_door.png');
+    this.loader.add('stone_stairs_down', 'assets/img/stone_stairs_down.png');
+    this.loader.add('items', 'assets/data/items.json');
+    this.loader.add('actors', 'assets/data/actors.json');
 
     const roomColors = Object.values(eRoomColor);
     for (const colorIndex in roomColors) {
       if (roomColors[colorIndex]) {
         const colorName = roomColors[colorIndex];
-        this.loader.add(`room_${colorName}`, `/assets/img/rooms/${colorName}.png`);
+        this.loader.add(`room_${colorName}`, `assets/img/rooms/${colorName}.png`);
       }
     }
 
@@ -104,7 +104,7 @@ class Game {
     list.forEach((res: any) => {
       const key: string = `${assetKey}_${assetSubKey}_${res.name}`;
       ResourcesShared.add(assetKey, assetSubKey, Object.assign(res, { key }));
-      this.loader.add(key, `/assets/img/${assetKey}/${assetSubKey}/${res.name}.png`);
+      this.loader.add(key, `assets/img/${assetKey}/${assetSubKey}/${res.name}.png`);
     });
   }
 
