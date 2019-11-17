@@ -1,7 +1,12 @@
 {
-  "ceil": [{ "name": "misc_lamp_inert" }, { "name": "misc_lamp_new" }, { "name": "misc_lantern" }],
-  "floor": [
-    {
+  "ceil": [{
+    "name": "misc_lamp_inert"
+  }, {
+    "name": "misc_lamp_new"
+  }, {
+    "name": "misc_lantern"
+  }],
+  "floor": [{
       "name": "ru_altar",
       "mind": 5,
       "hp": 5
@@ -13,10 +18,24 @@
     {
       "name": "gozag_altar",
       "hp": 5
+    },
+    {
+      "name": "trap_magical",
+      "hp": -10,
+      "hide": true
+    },
+    {
+      "name": "trap_gas",
+      "hp": -4,
+      "hide": true
+    },
+    {
+      "name": "trap_spear",
+      "hp": -7,
+      "hide": true
     }
   ],
-  "wall": [
-    {
+  "wall": [{
       "name": "dry_fountain",
       "mind": 3,
       "hp": 3
@@ -42,14 +61,29 @@
       "name": "mold_glowing_4"
     }
   ],
-  "monsters": [
-    { "name": "anubis_guard" },
-    { "name": "big_kobold_new" },
-    { "name": "cyclops_new" },
-    { "name": "deep_troll" },
-    { "name": "formicid" },
-    { "name": "tengu" },
-    { "name": "giant_orange_brain" },
-    { "name": "orb_guardian_old" }
+  "monsters": [{
+      "name": "anubis_guard"
+    },
+    {
+      "name": "big_kobold_new"
+    },
+    {
+      "name": "cyclops_new"
+    },
+    {
+      "name": "deep_troll"
+    },
+    {
+      "name": "formicid"
+    },
+    {
+      "name": "tengu"
+    },
+    {
+      "name": "giant_orange_brain"
+    },
+    {
+      "name": "orb_guardian_old"
+    }
   ]
 }

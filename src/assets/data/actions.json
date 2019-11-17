@@ -1,0 +1,32 @@
+{
+    "go": {
+        "hp": -2,
+        "mind": -2,
+        "chance": 100
+    },
+    "hitObject": {
+        "hp": 0,
+        "mind": -3,
+        "chance": 100
+    },
+    "monsterSee": {
+        "hp": 0,
+        "mind": 5,
+        "chance": 30
+    },
+    "monsterRun": {
+        "hp": 3,
+        "mind": 10,
+        "chance": 15
+    },
+    "monsterRunFail": {
+        "hp": 10,
+        "mind": 3,
+        "chance": 15
+    },
+    "traps": {
+        "hp": 7,
+        "mind": 1,
+        "chance": 30
+    }
+}
