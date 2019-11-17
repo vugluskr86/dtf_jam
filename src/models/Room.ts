@@ -1,8 +1,9 @@
 import { Level } from './Level';
 import { eActorTypes, Actor } from '@app/entities/Actor';
-import { randomInt } from '@app/Utils';
+import { randomInt, arrayRand } from '@app/Utils';
 import * as toastr from 'toastr';
 import { Room } from '@app/entities/Room';
+import { eItemTypes } from './Item';
 
 export enum eRoomColor {
   RED = 'red',
@@ -93,7 +94,7 @@ export class RoomModel {
           const dHp: number = randomInt(5, 10);
           this.level.character.hp -= dHp;
           this.level.character.mind -= dMind;
-          toastr.success(
+          toastr.warning(
             `Вам не удалось сбежать от монстра. Здоровье: -${dHp} Рассудок: -${dMind}`,
           );
           return;
@@ -102,7 +103,7 @@ export class RoomModel {
           const dHp: number = randomInt(1, 3);
           this.level.character.hp -= dHp;
           this.level.character.mind -= dMind;
-          toastr.warning(`Вы успещно сбежали от монстра. Здоровье: -${dHp} Рассудок: -${dMind}`);
+          toastr.success(`Вы успещно сбежали от монстра. Здоровье: -${dHp} Рассудок: -${dMind}`);
         }
       }
 
@@ -161,6 +162,14 @@ export class RoomModel {
     const rand37: number = randomInt(3, 7);
     const rand15: number = randomInt(1, 5);
 
+    const rewards: eItemTypes[] = [
+      eItemTypes.REWARD_DECK_LEGEND,
+      eItemTypes.REWARD_FAN,
+      eItemTypes.REWARD_FANTOM_MIRROR,
+      eItemTypes.POTION_HEALTH,
+      eItemTypes.POTION_ANTI_STRESS,
+    ];
+
     switch (actor.type) {
       case eActorTypes.ALTAR_ALL: {
         this.level.character.mind += rand37;
@@ -214,6 +223,9 @@ export class RoomModel {
         const randCoins: number = randomInt(1, 100);
         this.level.character.coins += randCoins;
         toastr.success(`Вы нашли ${randCoins} монет`);
+        if (Math.random() < 0.1) {
+          this.addItemReward(arrayRand(rewards));
+        }
         this.removeActor(actor, level);
         break;
       }
@@ -221,6 +233,9 @@ export class RoomModel {
         const randCoins: number = randomInt(50, 100);
         this.level.character.coins += randCoins;
         toastr.success(`Вы нашли ${randCoins} монет`);
+        if (Math.random() < 0.3) {
+          this.addItemReward(arrayRand(rewards));
+        }
         this.removeActor(actor, level);
         break;
       }
@@ -228,12 +243,31 @@ export class RoomModel {
         const randCoins: number = randomInt(100, 200);
         this.level.character.coins += randCoins;
         toastr.success(`Вы нашли ${randCoins} монет`);
+        if (Math.random() < 0.5) {
+          this.addItemReward(arrayRand(rewards));
+        }
         this.removeActor(actor, level);
         break;
       }
     }
     this.normalizeUserParams();
     this.level.forceUpdate();
+  }
+
+  private addItemReward(type: eItemTypes): void {
+    const addIndex: number = this.level.character.inventoty.findIndex((slotType: eItemTypes) => {
+      return slotType === null;
+    });
+
+    if (addIndex === -1) {
+      toastr.warning(
+        `Вы нашли артефакт, но в вашем инивентаре нехватило место для того чтобы его сохранить`,
+      );
+    } else {
+      toastr.success(`Вы нашли артефакт, он добавлен в ваш инвентарь`);
+      this.level.character.inventoty[addIndex] = type;
+      this.level.forceUpdate();
+    }
   }
 
   private normalizeUserParams(): void {

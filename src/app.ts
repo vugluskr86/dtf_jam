@@ -1,3 +1,4 @@
+import './app/styles';
 import { Application, Loader, Texture } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 import { Character } from './app/entities/Character';
@@ -5,12 +6,13 @@ import { IRoomViewSettings, Room } from './app/entities/Room';
 import { RoomModel, eRoomColor } from '@models/Room';
 import { Hud } from '@app/hud/Hud';
 import { Level } from '@models/Level';
-import './app/styles';
 import { ResourcesShared } from '@app/ResourcesShared';
 import { ICharacterModel } from '@models/Character';
 import { eItemTypes } from '@models/Item';
 import { IDoorModel } from '@models/Door';
 import { Door } from '@app/entities/Door';
+import { InventorySlot } from '@app/hud/InventorySlot';
+import * as toastr from 'toastr';
 
 class Game {
   private app: Application;
@@ -114,6 +116,51 @@ class Game {
   private setupHUD(): void {
     this.hud = new Hud();
     this.app.stage.addChild(this.hud);
+
+    this.hud.on('use', (slot: InventorySlot) => {
+      if (this.characterModel.inventoty[slot.slotIndex]) {
+        const type: eItemTypes = this.characterModel.inventoty[slot.slotIndex];
+
+        switch (type) {
+          case eItemTypes.REWARD_DECK_LEGEND: {
+            this.characterModel.maxHp += 30;
+            this.characterModel.maxMind += 30;
+            this.characterModel.coins += 500;
+            toastr.success(
+              `Использована колода легенд. Макс. здоровье: +30 Макс. рассудок: +30 Монет +500`,
+            );
+            break;
+          }
+          case eItemTypes.REWARD_FAN: {
+            this.characterModel.maxMind += 50;
+            this.characterModel.coins += 500;
+            toastr.success(`Использован веер. Макс. рассудок: +50 Монет +500`);
+            break;
+          }
+          case eItemTypes.REWARD_FANTOM_MIRROR: {
+            this.characterModel.maxHp += 50;
+            this.characterModel.coins += 150;
+            toastr.success(`Использовано фантомное зеркало. Макс. здоровье: +50 Монет +150`);
+            break;
+          }
+          case eItemTypes.POTION_HEALTH: {
+            this.characterModel.maxHp += 10;
+            this.characterModel.coins += 10;
+            toastr.success(`Использовано зелье лечения. Здоровье: +10 Монет +10`);
+            break;
+          }
+          case eItemTypes.POTION_ANTI_STRESS: {
+            this.characterModel.maxMind += 10;
+            this.characterModel.coins += 10;
+            toastr.success(`Использовано зелье релаксации. Рассудок: +10 Монет +10`);
+            break;
+          }
+        }
+
+        this.characterModel.inventoty[slot.slotIndex] = null;
+        this.hud.update(this.characterModel);
+      }
+    });
   }
 
   private setupCharacter(): void {
@@ -123,7 +170,7 @@ class Game {
       hp: 100,
       hunger: 100,
       maxHunger: 100,
-      inventoty: [eItemTypes.POTION_ANTI_STRESS, null, null, null],
+      inventoty: [null, null, null, null],
       maxHp: 100,
       mind: 200,
       maxMind: 200,

@@ -16,12 +16,12 @@ export class InventorySlot extends Container {
 
   private bg: Sprite;
   private icon: Sprite = null;
+  private type: eItemTypes = null;
 
-  constructor() {
+  constructor(public slotIndex: number) {
     super();
     this.bg = new Sprite(Loader.shared.resources['slot_vehumet'].texture);
     this.addChild(this.bg);
-
     this.bg.y = 0.5;
     this.bg.x = 0.5;
     this.interactive = true;
@@ -31,11 +31,21 @@ export class InventorySlot extends Container {
     if (this.icon) {
       this.removeChild(this.icon);
       this.icon = null;
+      this.type = null;
     }
 
     if (type) {
+      this.type = type;
       this.icon = new Sprite(Loader.shared.resources[type].texture);
       this.addChild(this.icon);
     }
+  }
+
+  public isEmpty(): boolean {
+    return Boolean(!this.icon);
+  }
+
+  public getType(): eItemTypes {
+    return this.type;
   }
 }

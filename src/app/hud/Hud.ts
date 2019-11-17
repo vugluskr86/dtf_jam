@@ -33,10 +33,34 @@ export class Hud extends Container {
     const INVENTORY_Y: number = 680;
     const INVENTORY_START_X: number = 1120;
 
-    this.itemSlot0 = this.addInventorySlot(INVENTORY_START_X, INVENTORY_Y);
-    this.itemSlot1 = this.addInventorySlot(INVENTORY_START_X + 32 + 8, INVENTORY_Y);
-    this.itemSlot2 = this.addInventorySlot(INVENTORY_START_X + 64 + 16, INVENTORY_Y);
-    this.itemSlot3 = this.addInventorySlot(INVENTORY_START_X + 96 + 24, INVENTORY_Y);
+    this.itemSlot0 = this.addInventorySlot(0, INVENTORY_START_X, INVENTORY_Y);
+    this.itemSlot1 = this.addInventorySlot(1, INVENTORY_START_X + 32 + 8, INVENTORY_Y);
+    this.itemSlot2 = this.addInventorySlot(2, INVENTORY_START_X + 64 + 16, INVENTORY_Y);
+    this.itemSlot3 = this.addInventorySlot(3, INVENTORY_START_X + 96 + 24, INVENTORY_Y);
+
+    this.itemSlot0.on('click', () => {
+      if (!this.itemSlot0.isEmpty()) {
+        this.emit('use', this.itemSlot0);
+      }
+    });
+
+    this.itemSlot1.on('click', () => {
+      if (!this.itemSlot1.isEmpty()) {
+        this.emit('use', this.itemSlot1);
+      }
+    });
+
+    this.itemSlot2.on('click', () => {
+      if (!this.itemSlot2.isEmpty()) {
+        this.emit('use', this.itemSlot2);
+      }
+    });
+
+    this.itemSlot3.on('click', () => {
+      if (!this.itemSlot3.isEmpty()) {
+        this.emit('use', this.itemSlot3);
+      }
+    });
 
     this.text = new Text('Монеты: 0. Пройдено комнат: 0', Fonts.SMALL_AQUAMARINE);
     this.text.x = 20;
@@ -73,8 +97,8 @@ export class Hud extends Container {
     return progrss;
   }
 
-  private addInventorySlot(x: number, y: number): InventorySlot {
-    const item: InventorySlot = new InventorySlot();
+  private addInventorySlot(index: number, x: number, y: number): InventorySlot {
+    const item: InventorySlot = new InventorySlot(index);
     this.addChild(item);
     item.x = x;
     item.y = y;
