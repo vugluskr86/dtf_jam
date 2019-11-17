@@ -18,6 +18,12 @@ export enum eActorTypes {
   TRAP_SPEAR,
 
   MONSTER,
+
+  TREASURE_SMALL,
+  TREASURE_MIDDLE,
+  TREASURE_LARGE,
+
+  NONE,
 }
 
 export class Actor extends Sprite {

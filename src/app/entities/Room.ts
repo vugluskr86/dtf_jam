@@ -27,7 +27,7 @@ export class Room extends Sprite {
       if (target instanceof Actor) {
         const actor: Actor = target as Actor;
         if (actor.room.model === level.current) {
-          model.onInteractActor(actor.type);
+          model.onInteractActor(actor, this);
         } else {
           model.onIntreact();
         }
@@ -52,6 +52,8 @@ export class Room extends Sprite {
       [eActorTypes.TRAP_SPEAR]: 0.08,
 
       [eActorTypes.MONSTER]: 0.25,
+
+      [eActorTypes.NONE]: 0.25,
     });
 
     const placeAlign: eRoomAlign = arrayRand([eRoomAlign.LEFT, eRoomAlign.RIGHT]);
@@ -75,6 +77,34 @@ export class Room extends Sprite {
       case eActorTypes.TRAP_SPEAR:
         this.addTrap(placeObject, placeAlign);
         break;
+    }
+
+    const placeTreasure: eActorTypes = weightedRand({
+      [eActorTypes.TREASURE_SMALL]: 0.08,
+      [eActorTypes.TREASURE_MIDDLE]: 0.08,
+      [eActorTypes.TREASURE_LARGE]: 0.08,
+      [eActorTypes.NONE]: 0.25,
+    });
+
+    switch (placeTreasure) {
+      case eActorTypes.TREASURE_SMALL:
+      case eActorTypes.TREASURE_MIDDLE:
+      case eActorTypes.TREASURE_LARGE:
+        this.addTreasure(
+          placeTreasure,
+          placeAlign === eRoomAlign.LEFT ? eRoomAlign.RIGHT : eRoomAlign.LEFT,
+        );
+        break;
+    }
+  }
+
+  public removeActor(actor: Actor): void {
+    const actorIndex: number = this.actors.findIndex((actorFind: Actor) => {
+      return actorFind === actor;
+    });
+    if (actorIndex !== -1) {
+      this.actors.splice(actorIndex, 1);
+      this.removeChild(actor);
     }
   }
 
@@ -178,6 +208,23 @@ export class Room extends Sprite {
       }
       case eActorTypes.TRAP_SPEAR: {
         this.addRandomActiveObject(type, align, ['actors_floor_trap_spear']);
+        break;
+      }
+    }
+  }
+
+  private addTreasure(type: eActorTypes, align: eRoomAlign): void {
+    switch (type) {
+      case eActorTypes.TREASURE_SMALL: {
+        this.addRandomActiveObject(type, align, ['items_treasures_chest']);
+        break;
+      }
+      case eActorTypes.TREASURE_MIDDLE: {
+        this.addRandomActiveObject(type, align, ['items_treasures_chest_2_closed']);
+        break;
+      }
+      case eActorTypes.TREASURE_LARGE: {
+        this.addRandomActiveObject(type, align, ['items_treasures_large_box']);
         break;
       }
     }

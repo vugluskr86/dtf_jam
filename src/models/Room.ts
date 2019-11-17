@@ -1,7 +1,8 @@
 import { Level } from './Level';
-import { eActorTypes } from '@app/entities/Actor';
+import { eActorTypes, Actor } from '@app/entities/Actor';
 import { randomInt } from '@app/Utils';
 import * as toastr from 'toastr';
+import { Room } from '@app/entities/Room';
 
 export enum eRoomColor {
   RED = 'red',
@@ -70,6 +71,16 @@ export class RoomModel {
   public getMonster(): eActorTypes {
     return this.actors.find((type: eActorTypes) => {
       return type === eActorTypes.MONSTER;
+    });
+  }
+
+  public getTreasure(): eActorTypes {
+    return this.actors.find((type: eActorTypes) => {
+      return [
+        eActorTypes.TREASURE_SMALL,
+        eActorTypes.TREASURE_MIDDLE,
+        eActorTypes.TREASURE_SMALL,
+      ].includes(type);
     });
   }
 
@@ -142,7 +153,7 @@ export class RoomModel {
     }
   }
 
-  public onInteractActor(actor: eActorTypes): void {
+  public onInteractActor(actor: Actor, level: Room): void {
     this.level.character.mind--;
 
     toastr.warning(`Вы произвели дейтсвие: Рассудок -1`);
@@ -150,41 +161,41 @@ export class RoomModel {
     const rand37: number = randomInt(3, 7);
     const rand15: number = randomInt(1, 5);
 
-    switch (actor) {
+    switch (actor.type) {
       case eActorTypes.ALTAR_ALL: {
         this.level.character.mind += rand37;
         this.level.character.hp += rand37;
         toastr.warning(
-          `Алтарь восполняет ваше состояние: Здоровье: -${rand37} Рассудок: -${rand37}`,
+          `Алтарь восполняет ваше состояние: Здоровье: +${rand37} Рассудок: +${rand37}`,
         );
         break;
       }
       case eActorTypes.ALTAR_MIND: {
         this.level.character.mind += rand37;
-        toastr.warning(`Алтарь восполняет ваше состояние: Рассудок: -${rand37}`);
+        toastr.warning(`Алтарь восполняет ваше состояние: Рассудок: +${rand37}`);
         break;
       }
       case eActorTypes.ALTAR_HP: {
         this.level.character.hp += rand37;
-        toastr.warning(`Алтарь восполняет ваше состояние: Здоровье: -${rand37}`);
+        toastr.warning(`Алтарь восполняет ваше состояние: Здоровье: +${rand37}`);
         break;
       }
       case eActorTypes.FOUNTAIN_ALL: {
         this.level.character.mind += rand15;
         this.level.character.hp += rand15;
         toastr.warning(
-          `Фонтан восполняет ваше состояние: Здоровье: -${rand15} Рассудок: -${rand15}`,
+          `Фонтан восполняет ваше состояние: Здоровье: +${rand15} Рассудок: +${rand15}`,
         );
         break;
       }
       case eActorTypes.FOUNTAIN_HP: {
         this.level.character.hp += rand15;
-        toastr.warning(`Фонтан восполняет ваше состояние: Рассудок: -${rand15}`);
+        toastr.warning(`Фонтан восполняет ваше состояние: Рассудок: +${rand15}`);
         break;
       }
       case eActorTypes.FOUNTAIN_MIND: {
         this.level.character.mind += rand15;
-        toastr.warning(`Фонтан восполняет ваше состояние: Рассудок: -${rand15}`);
+        toastr.warning(`Фонтан восполняет ваше состояние: Рассудок: +${rand15}`);
         break;
       }
       case eActorTypes.TRAP_GAS: {
@@ -197,6 +208,27 @@ export class RoomModel {
         break;
       }
       case eActorTypes.MONSTER: {
+        break;
+      }
+      case eActorTypes.TREASURE_SMALL: {
+        const randCoins: number = randomInt(1, 100);
+        this.level.character.coins += randCoins;
+        toastr.warning(`Вы нашли ${randCoins} монет`);
+        this.removeActor(actor, level);
+        break;
+      }
+      case eActorTypes.TREASURE_MIDDLE: {
+        const randCoins: number = randomInt(50, 100);
+        this.level.character.coins += randCoins;
+        toastr.warning(`Вы нашли ${randCoins} монет`);
+        this.removeActor(actor, level);
+        break;
+      }
+      case eActorTypes.TREASURE_LARGE: {
+        const randCoins: number = randomInt(100, 200);
+        this.level.character.coins += randCoins;
+        toastr.warning(`Вы нашли ${randCoins} монет`);
+        this.removeActor(actor, level);
         break;
       }
     }
@@ -215,6 +247,16 @@ export class RoomModel {
 
     if (this.level.character.hp > this.level.character.maxHp) {
       this.level.character.hp = this.level.character.maxHp;
+    }
+  }
+
+  private removeActor(actor: Actor, level: Room): void {
+    const actorIndex: number = this.actors.findIndex((actorFind: eActorTypes) => {
+      return actorFind === actor.type;
+    });
+    if (actorIndex !== -1) {
+      this.actors.splice(actorIndex, 1);
+      level.removeActor(actor);
     }
   }
 }

@@ -38,7 +38,7 @@ export class Hud extends Container {
     this.itemSlot2 = this.addInventorySlot(INVENTORY_START_X + 64 + 16, INVENTORY_Y);
     this.itemSlot3 = this.addInventorySlot(INVENTORY_START_X + 96 + 24, INVENTORY_Y);
 
-    this.text = new Text('Монеты: 0. Пройено комнат: 0', Fonts.SMALL_AQUAMARINE);
+    this.text = new Text('Монеты: 0. Пройдено комнат: 0', Fonts.SMALL_AQUAMARINE);
     this.text.x = 20;
     this.text.y = 20;
     this.addChild(this.text);
@@ -54,7 +54,7 @@ export class Hud extends Container {
     this.itemSlot2.setItem(character.inventoty[2]);
     this.itemSlot3.setItem(character.inventoty[3]);
 
-    this.text.text = `Монеты: ${character.coins}. Пройено комнат: ${character.moveCount}`;
+    this.text.text = `Монеты: ${character.coins}. Пройдено комнат: ${character.moveCount}`;
   }
 
   private addProgressBar(
