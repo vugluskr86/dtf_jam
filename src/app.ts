@@ -7,6 +7,8 @@ import { Hud } from '@app/hud/Hud';
 import { Level } from '@models/Level';
 import './app/styles';
 import { ResourcesShared } from '@app/ResourcesShared';
+import { ICharacterModel } from '@models/Character';
+import { eItemTypes } from '@models/Item';
 
 class Game {
   private app: Application;
@@ -16,6 +18,7 @@ class Game {
   private roomViewSettings: IRoomViewSettings;
   private character: Character;
   private level: Level;
+  private characterModel: ICharacterModel;
 
   constructor() {
     this.level = new Level();
@@ -48,6 +51,7 @@ class Game {
 
     // preload needed assets
     this.loader.add('hero', '/assets/img/hero.png');
+    this.loader.add('slot_vehumet', '/assets/img/slot_vehumet.png');
     this.loader.add('items', '/assets/data/items.json');
     this.loader.add('actors', '/assets/data/actors.json');
     // this.loader.add('data_rooms', '/assets/data/rooms.json');
@@ -125,18 +129,21 @@ class Game {
     this.hud = new Hud();
     this.app.stage.addChild(this.hud);
 
-    this.hud.update({
-      hp: 0.2,
-      hunger: 0.8,
-      maxHp: 0,
-      mind: 0.5,
-    });
+    this.hud.update(this.characterModel);
   }
 
   private setupCharacter(): void {
     // append hero
     this.character = new Character(this.loader.resources['hero'].texture);
     this.viewport.addChild(this.character);
+
+    this.characterModel = {
+      hp: 0.2,
+      hunger: 0.8,
+      inventoty: [eItemTypes.POTION_ANTI_STRESS, null, null, null],
+      maxHp: 0,
+      mind: 0.5,
+    };
 
     this.level.on('move', (model: RoomModel) => {
       this.moveCharaterToRoom(model);

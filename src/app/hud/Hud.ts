@@ -1,17 +1,18 @@
-import { Container, Sprite, TextStyle } from 'pixi.js';
+import { Container, TextStyle } from 'pixi.js';
 import { ProgressBar } from './ProgressBar';
 import { ICharacterModel } from '@models/Character';
 import { Fonts } from './Fonts';
+import { InventorySlot } from './InventorySlot';
 
 export class Hud extends Container {
   private progrssHP: ProgressBar;
   private progrssMind: ProgressBar;
   private progrssHunger: ProgressBar;
 
-  private itemCell0: Sprite;
-  private itemCell1: Sprite;
-  private itemCell2: Sprite;
-  private itemCell3: Sprite;
+  private itemSlot0: InventorySlot;
+  private itemSlot1: InventorySlot;
+  private itemSlot2: InventorySlot;
+  private itemSlot3: InventorySlot;
 
   constructor() {
     super();
@@ -26,12 +27,25 @@ export class Hud extends Container {
       8,
       0x7fffd4,
     );
+
+    const INVENTORY_Y: number = 680;
+    const INVENTORY_START_X: number = 1120;
+
+    this.itemSlot0 = this.addInventorySlot(INVENTORY_START_X, INVENTORY_Y);
+    this.itemSlot1 = this.addInventorySlot(INVENTORY_START_X + 32 + 8, INVENTORY_Y);
+    this.itemSlot2 = this.addInventorySlot(INVENTORY_START_X + 64 + 16, INVENTORY_Y);
+    this.itemSlot3 = this.addInventorySlot(INVENTORY_START_X + 96 + 24, INVENTORY_Y);
   }
 
   public update(character: ICharacterModel): void {
     this.progrssHP.draw(character.hp);
     this.progrssMind.draw(character.mind);
     this.progrssHunger.draw(character.hunger);
+
+    this.itemSlot0.setItem(character.inventoty[0]);
+    this.itemSlot1.setItem(character.inventoty[1]);
+    this.itemSlot2.setItem(character.inventoty[2]);
+    this.itemSlot3.setItem(character.inventoty[3]);
   }
 
   private addProgressBar(
@@ -50,19 +64,11 @@ export class Hud extends Container {
     return progrss;
   }
 
-  /*
-  public drawText(x: number, y: number, text: string, textSize: number, color: number): void {
-    const style = new TextStyle({
-      dropShadow: true,
-      dropShadowDistance: 1,
-      fill: color,
-      fontFamily: 'Futura',
-      fontSize: textSize,
-    });
-    const message = new Text(text, style);
-    message.x = x;
-    message.y = y;
-    this.object.addChild(message);
+  private addInventorySlot(x: number, y: number): InventorySlot {
+    const item: InventorySlot = new InventorySlot();
+    this.addChild(item);
+    item.x = x;
+    item.y = y;
+    return item;
   }
-  */
 }
