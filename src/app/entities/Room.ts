@@ -39,26 +39,41 @@ export class Room extends Sprite {
     this.placeDecor();
 
     const placeObject: eActorTypes = weightedRand({
-      [eActorTypes.ALTAR]: 0.25,
-      [eActorTypes.FOUNTAIN]: 0.25,
+      [eActorTypes.ALTAR_ALL]: 0.08,
+      [eActorTypes.ALTAR_HP]: 0.08,
+      [eActorTypes.ALTAR_MIND]: 0.08,
+
+      [eActorTypes.FOUNTAIN_ALL]: 0.08,
+      [eActorTypes.FOUNTAIN_HP]: 0.08,
+      [eActorTypes.FOUNTAIN_MIND]: 0.08,
+
+      [eActorTypes.TRAP_GAS]: 0.08,
+      [eActorTypes.TRAP_MAGIC]: 0.08,
+      [eActorTypes.TRAP_SPEAR]: 0.08,
+
       [eActorTypes.MONSTER]: 0.25,
-      [eActorTypes.TRAP]: 0.25,
     });
 
     const placeAlign: eRoomAlign = arrayRand([eRoomAlign.LEFT, eRoomAlign.RIGHT]);
 
     switch (placeObject) {
-      case eActorTypes.ALTAR:
-        this.addAltar(placeAlign);
+      case eActorTypes.ALTAR_MIND:
+      case eActorTypes.ALTAR_HP:
+      case eActorTypes.ALTAR_MIND:
+        this.addAltar(placeObject, placeAlign);
         break;
-      case eActorTypes.FOUNTAIN:
-        this.addFountain(placeAlign);
+      case eActorTypes.FOUNTAIN_ALL:
+      case eActorTypes.FOUNTAIN_HP:
+      case eActorTypes.FOUNTAIN_MIND:
+        this.addFountain(placeObject, placeAlign);
         break;
       case eActorTypes.MONSTER:
         this.addMonster(placeAlign);
         break;
-      case eActorTypes.TRAP:
-        this.addTrap(placeAlign);
+      case eActorTypes.TRAP_GAS:
+      case eActorTypes.TRAP_MAGIC:
+      case eActorTypes.TRAP_SPEAR:
+        this.addTrap(placeObject, placeAlign);
         break;
     }
   }
@@ -122,35 +137,54 @@ export class Room extends Sprite {
     return Room.SPRITE_WIDTH / 2;
   }
 
-  private addRandomActiveObject(align: eRoomAlign, list: string[]): void {
+  private addRandomActiveObject(type: eActorTypes, align: eRoomAlign, list: string[]): void {
     const key: string = arrayRand(list);
 
     const texture: Texture = Loader.shared.resources[key].texture;
-    const actors: Actor = new Actor(texture, this, eActorTypes.FOUNTAIN);
+    const actors: Actor = new Actor(texture, this, type);
     actors.x = this.getAlignX(align);
     actors.y = Room.SPRITE_HIGHT - 32;
     this.actors.push(actors);
+    this.model.addActor(type); // ВНИМАНИЕ ГВНОКОД!
     this.addChild(actors);
   }
 
-  private addFountain(align: eRoomAlign): void {
-    this.addRandomActiveObject(align, [
-      'actors_wall_blood_fountain',
-      'actors_wall_blue_fountain',
-      'actors_wall_dry_fountain',
-    ]);
+  private addFountain(type: eActorTypes, align: eRoomAlign): void {
+    switch (type) {
+      case eActorTypes.FOUNTAIN_ALL: {
+        this.addRandomActiveObject(type, align, ['actors_wall_dry_fountain']);
+        break;
+      }
+      case eActorTypes.FOUNTAIN_HP: {
+        this.addRandomActiveObject(type, align, ['actors_wall_blood_fountain']);
+        break;
+      }
+      case eActorTypes.FOUNTAIN_MIND: {
+        this.addRandomActiveObject(type, align, ['actors_wall_blue_fountain']);
+        break;
+      }
+    }
   }
 
-  private addTrap(align: eRoomAlign): void {
-    this.addRandomActiveObject(align, [
-      'actors_floor_trap_gas',
-      'actors_floor_trap_magical',
-      'actors_floor_trap_spear',
-    ]);
+  private addTrap(type: eActorTypes, align: eRoomAlign): void {
+    switch (type) {
+      case eActorTypes.TRAP_GAS: {
+        this.addRandomActiveObject(type, align, ['actors_floor_trap_gas']);
+        break;
+      }
+      case eActorTypes.TRAP_MAGIC: {
+        this.addRandomActiveObject(type, align, ['actors_floor_trap_magical']);
+        break;
+      }
+      case eActorTypes.TRAP_SPEAR: {
+        this.addRandomActiveObject(type, align, ['actors_floor_trap_spear']);
+        break;
+      }
+    }
   }
 
   private addMonster(align: eRoomAlign): void {
-    this.addRandomActiveObject(align, [
+    this.addRandomActiveObject(eActorTypes.MONSTER, align, [
       'actors_monsters_anubis_guard',
       'actors_monsters_big_kobold_new',
       'actors_monsters_cyclops_new',
@@ -162,12 +196,21 @@ export class Room extends Sprite {
     ]);
   }
 
-  private addAltar(align: eRoomAlign): void {
-    this.addRandomActiveObject(align, [
-      'actors_floor_gozag_altar',
-      'actors_floor_misc_altar',
-      'actors_floor_ru_altar',
-    ]);
+  private addAltar(type: eActorTypes, align: eRoomAlign): void {
+    switch (type) {
+      case eActorTypes.ALTAR_ALL: {
+        this.addRandomActiveObject(type, align, ['actors_floor_ru_altar']);
+        break;
+      }
+      case eActorTypes.ALTAR_HP: {
+        this.addRandomActiveObject(type, align, ['actors_floor_gozag_altar']);
+        break;
+      }
+      case eActorTypes.ALTAR_MIND: {
+        this.addRandomActiveObject(type, align, ['actors_floor_misc_altar']);
+        break;
+      }
+    }
   }
 }
 

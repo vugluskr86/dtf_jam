@@ -38,9 +38,9 @@ export class Hud extends Container {
   }
 
   public update(character: ICharacterModel): void {
-    this.progrssHP.draw(character.hp);
-    this.progrssMind.draw(character.mind);
-    this.progrssHunger.draw(character.hunger);
+    this.progrssHP.draw(character.hp / character.maxHp);
+    this.progrssMind.draw(character.mind / character.maxMind);
+    this.progrssHunger.draw(character.hunger / character.maxHunger);
 
     this.itemSlot0.setItem(character.inventoty[0]);
     this.itemSlot1.setItem(character.inventoty[1]);

@@ -2,6 +2,7 @@ import { IRoomPrototype, RoomModel, eRoomColor, eRoomType } from './Room';
 import { getRandomElementOfEnum } from '@app/Utils';
 import { EventEmitter } from 'events';
 import { IDoorModel } from './Door';
+import { ICharacterModel } from './Character';
 
 export class Level extends EventEmitter {
   public static MAX_ROOMS: number = 50;
@@ -9,6 +10,10 @@ export class Level extends EventEmitter {
   private rooms: RoomModel[] = [];
   private currentRoom: RoomModel = null;
   private doors: IDoorModel[] = [];
+
+  constructor(public character: ICharacterModel) {
+    super();
+  }
 
   public get roomsList(): RoomModel[] {
     return this.rooms;
@@ -24,7 +29,12 @@ export class Level extends EventEmitter {
 
   public moveCharacter(model: RoomModel): void {
     this.currentRoom = model;
+    this.character.moveCount++;
     this.emit('move', model);
+  }
+
+  public forceUpdate(): void {
+    this.emit('forceUpdate');
   }
 
   public build(): void {

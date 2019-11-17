@@ -23,9 +23,6 @@ class Game {
   private characterModel: ICharacterModel;
 
   constructor() {
-    this.level = new Level();
-    this.level.build();
-
     this.app = new Application({
       backgroundColor: 0x1d1d1d,
       height: 720,
@@ -109,34 +106,44 @@ class Game {
   }
 
   private setup(): void {
-    this.setupRooms();
-    this.setupCharacter();
     this.setupHUD();
+    this.setupCharacter();
+    this.setupRooms();
   }
 
   private setupHUD(): void {
     this.hud = new Hud();
     this.app.stage.addChild(this.hud);
-    this.hud.update(this.characterModel);
   }
 
   private setupCharacter(): void {
     this.character = new Character(this.loader.resources['hero'].texture);
-    this.viewport.addChild(this.character);
 
     this.characterModel = {
-      hp: 0.2,
-      hunger: 0.8,
+      hp: 100,
+      hunger: 100,
+      maxHunger: 100,
       inventoty: [eItemTypes.POTION_ANTI_STRESS, null, null, null],
-      maxHp: 0,
-      mind: 0.5,
+      maxHp: 100,
+      mind: 200,
+      maxMind: 200,
+      moveCount: 0,
     };
+
+    this.level = new Level(this.characterModel);
+    this.level.build();
 
     this.level.on('move', (model: RoomModel) => {
       this.moveCharaterToRoom(model);
+      this.hud.update(this.characterModel);
+    });
+
+    this.level.on('forceUpdate', () => {
+      this.hud.update(this.characterModel);
     });
 
     this.level.moveCharacter(this.level.roomsList[0]);
+    this.hud.update(this.characterModel);
   }
 
   private setupRooms(): void {
@@ -147,6 +154,9 @@ class Game {
     this.level.doorsList.forEach((door: IDoorModel) => {
       this.spawnDoor(door);
     });
+
+    // FIXME: Zorder
+    this.viewport.addChild(this.character);
   }
 
   private spawnRoom(model: RoomModel): Room {

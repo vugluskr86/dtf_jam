@@ -1,14 +1,13 @@
 import { eItemTypes } from './Item';
 
-export type HpValue = number;
-export type MaxHpValue = number;
-export type MindValue = number;
-export type HungerValue = number;
-
 export interface ICharacterModel {
-  hp: HpValue;
-  maxHp: MaxHpValue;
-  mind: MindValue;
-  hunger: HungerValue;
+  hp: number;
+  maxHp: number;
+  maxMind: number;
+  maxHunger: number;
+  mind: number;
+  hunger: number;
   inventoty: [eItemTypes, eItemTypes, eItemTypes, eItemTypes];
+
+  moveCount: number;
 }

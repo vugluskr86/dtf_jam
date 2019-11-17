@@ -22,6 +22,7 @@ export class ProgressBar extends Container {
   }
 
   public draw(value: number): void {
+    const valueAbs: number = value <= 0 ? 0 : value;
     this.ctx.clear();
 
     this.ctx.beginFill(0x000000);
@@ -29,7 +30,7 @@ export class ProgressBar extends Container {
     this.ctx.endFill();
 
     this.ctx.beginFill(this.pgColor);
-    this.ctx.drawRect(0, 0, this.w * value, this.h);
+    this.ctx.drawRect(0, 0, this.w * valueAbs, this.h);
     this.ctx.endFill();
   }
 }
