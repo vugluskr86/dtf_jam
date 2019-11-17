@@ -1,5 +1,6 @@
 {
     "_data": {
+        "chests": ["chest", "chest_2_closed", "large_box"],
         "potions": [{
                 "name": "heal",
                 "hp": 1,
@@ -21,15 +22,15 @@
             "name": "gold_pile",
             "price": 100
         }, {
-            "name": "Bronze Artifact",
+            "name": "misc_phantom_mirror",
             "maxHp": 5,
             "price": 150
         }, {
-            "name": "Silver Artifact",
+            "name": "misc_fan_new",
             "maxMind": 5,
             "price": 300
         }, {
-            "name": "Gold Artifact",
+            "name": "misc_deck_legendary_new",
             "maxHp": 3,
             "maxMind": 3,
             "price": 500
