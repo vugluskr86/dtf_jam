@@ -1,5 +1,5 @@
 {
-  "ceil": ["misc_lamp_inert", "misc_lamp_new", "misc_lantern"],
+  "ceil": [{ "name": "misc_lamp_inert" }, { "name": "misc_lamp_new" }, { "name": "misc_lantern" }],
   "floor": [
     {
       "name": "ru_altar",
@@ -43,13 +43,13 @@
     }
   ],
   "monsters": [
-    "anubis_guard",
-    "big_kobold_new",
-    "cyclops_new",
-    "deep_troll",
-    "formicid",
-    "giant_orange_brain",
-    "orb_guardian_old",
-    "tengu"
+    { "name": "anubis_guard" },
+    { "name": "big_kobold_new" },
+    { "name": "cyclops_new" },
+    { "name": "deep_troll" },
+    { "name": "formicid" },
+    { "name": "tengu" },
+    { "name": "giant_orange_brain" },
+    { "name": "orb_guardian_old" }
   ]
 }

@@ -1,14 +1,24 @@
-import { Container, Graphics } from 'pixi.js';
+import { Container, Graphics, Text, TextStyle } from 'pixi.js';
 
 export class ProgressBar extends Container {
   private ctx: Graphics;
+  private text: Text;
 
-  constructor(public pgColor: number, public w: number, public h: number) {
+  constructor(
+    text: string,
+    font: TextStyle,
+    public pgColor: number,
+    public w: number,
+    public h: number,
+  ) {
     super();
+    this.text = new Text(text, font);
+    this.text.x = 0;
+    this.text.y = -4;
+    this.addChild(this.text);
     this.ctx = new Graphics();
+    this.ctx.x = this.width + 3;
     this.addChild(this.ctx);
-    this.width = 100;
-    this.height = 10;
   }
 
   public draw(value: number): void {

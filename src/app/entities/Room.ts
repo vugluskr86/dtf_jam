@@ -25,14 +25,14 @@ export class Room extends Sprite {
 
     const ceils: number = weightedRand({ 1: 0.8, 2: 0.1, 3: 0.1 });
     for (let i = 0; i < ceils; i++) {
-      const name: string = arrayRand(ResourcesShared.actorsCeil);
+      const key: string = arrayRand(ResourcesShared.list('actors', 'ceil')).key;
       const ceilIndex: number = ceils + 1;
-      this.addCeild(name, (i + 1) * (Room.SPRITE_WIDTH / ceilIndex));
+      this.addCeild(key, (i + 1) * (Room.SPRITE_WIDTH / ceilIndex));
     }
   }
 
-  private addCeild(name: string, x: number): void {
-    const texture: Texture = Loader.shared.resources[name].texture;
+  private addCeild(key: string, x: number): void {
+    const texture: Texture = Loader.shared.resources[key].texture;
     if (texture) {
       const actors: Actor = new Actor(texture, eActorTypes.DECOR);
       this.addChild(actors);

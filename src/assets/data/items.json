@@ -1,39 +1,45 @@
 {
-    "_data": {
-        "chests": ["chest", "chest_2_closed", "large_box"],
-        "potions": [{
-                "name": "heal",
-                "hp": 1,
-                "price": 1
-            },
-            {
-                "name": "anti_stress",
-                "mind": 1,
-                "price": 1
-            }
-        ],
-        "treasures": [{
-            "name": "coin",
-            "price": 1
-        }, {
-            "name": "coins",
-            "price": 5
-        }, {
-            "name": "gold_pile",
-            "price": 100
-        }, {
-            "name": "misc_phantom_mirror",
-            "maxHp": 5,
-            "price": 150
-        }, {
-            "name": "misc_fan_new",
-            "maxMind": 5,
-            "price": 300
-        }, {
-            "name": "misc_deck_legendary_new",
-            "maxHp": 3,
-            "maxMind": 3,
-            "price": 500
-        }]
+  "chests": [{ "name": "chest" }, { "name": "chest_2_closed" }, { "name": "large_box" }],
+  "potions": [
+    {
+      "name": "heal",
+      "hp": 1,
+      "price": 1
+    },
+    {
+      "name": "anti_stress",
+      "mind": 1,
+      "price": 1
     }
+  ],
+  "treasures": [
+    {
+      "name": "coin",
+      "price": 1
+    },
+    {
+      "name": "coins",
+      "price": 5
+    },
+    {
+      "name": "gold_pile",
+      "price": 100
+    },
+    {
+      "name": "misc_phantom_mirror",
+      "maxHp": 5,
+      "price": 150
+    },
+    {
+      "name": "misc_fan_new",
+      "maxMind": 5,
+      "price": 300
+    },
+    {
+      "name": "misc_deck_legendary_new",
+      "maxHp": 3,
+      "maxMind": 3,
+      "price": 500
+    }
+  ]
 }

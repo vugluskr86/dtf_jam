@@ -22,7 +22,7 @@ class Game {
     this.level.build();
 
     this.app = new Application({
-      backgroundColor: 0x0d0d0d,
+      backgroundColor: 0x1d1d1d,
       height: 720,
       width: 1280,
     });
@@ -48,8 +48,8 @@ class Game {
 
     // preload needed assets
     this.loader.add('hero', '/assets/img/hero.png');
-    this.loader.add('data_items', '/assets/data/items.json');
-    this.loader.add('data_actors', '/assets/data/actors.json');
+    this.loader.add('items', '/assets/data/items.json');
+    this.loader.add('actors', '/assets/data/actors.json');
     // this.loader.add('data_rooms', '/assets/data/rooms.json');
 
     const roomColors = Object.values(eRoomColor);
@@ -74,20 +74,30 @@ class Game {
   }
 
   private onLoadFirstStep(): void {
-    const actors: any = this.loader.resources['data_actors'].data;
-    const ceils: any = actors.ceil;
+    this.loadAssets('actors', 'ceil');
+    this.loadAssets('actors', 'floor');
+    this.loadAssets('actors', 'wall');
+    this.loadAssets('actors', 'monsters');
 
-    ceils.forEach((name: string) => {
-      const key: string = `actors_ceil_${name}`;
-      ResourcesShared.actorsCeil.push(key);
-      this.loader.add(key, `/assets/img/objects/ceil/${name}.png`);
-    });
+    this.loadAssets('items', 'chests');
+    this.loadAssets('items', 'potions');
+    this.loadAssets('items', 'treasures');
 
     this.loader.once('complete', () => {
       this.setup();
     });
 
     this.loader.load();
+  }
+
+  private loadAssets(assetKey: string, assetSubKey: string): void {
+    const actors: any = this.loader.resources[assetKey].data;
+    const list: any = actors[assetSubKey];
+    list.forEach((res: any) => {
+      const key: string = `${assetKey}_${assetSubKey}_${res.name}`;
+      ResourcesShared.add(assetKey, assetSubKey, Object.assign(res, { key }));
+      this.loader.add(key, `/assets/img/${assetKey}/${assetSubKey}/${res.name}.png`);
+    });
   }
 
   private setup(): void {
@@ -117,7 +127,7 @@ class Game {
 
     this.hud.update({
       hp: 0.2,
-      hunger: 0,
+      hunger: 0.8,
       maxHp: 0,
       mind: 0.5,
     });
