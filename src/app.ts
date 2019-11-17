@@ -60,11 +60,11 @@ class Game {
     }
 
     this.loader.once('complete', () => {
-      this.setup();
+      this.onLoadFirstStep();
     });
 
     // then launch app
-    this.loader.load(this.setup.bind(this));
+    this.loader.load();
 
     this.roomViewSettings = {
       paddingWidth: 10,
@@ -72,13 +72,16 @@ class Game {
     };
   }
 
+  private onLoadFirstStep(): void {
+    // const actors: any = this.loader.resources['data_actors'].data;
+
+    this.setup();
+  }
+
   private setup(): void {
     this.setupRooms();
     this.setupCharacter();
     this.setupHUD();
-
-    console.log(this.loader.resources['data_items'].data);
-
     /*
     //  animate hero
     let moveLeft = true;
