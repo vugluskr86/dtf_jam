@@ -38,7 +38,45 @@ export class Level extends EventEmitter {
   }
 
   public build(): void {
-    this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.GREEN), 0, 0));
+    const ROOMS_H = 4;
+    const ROOMS_V = 4;
+    const roomColors = [
+      eRoomColor.GREEN,
+      eRoomColor.GRAY,
+      eRoomColor.BLACK,
+      eRoomColor.YELLOW,
+      eRoomColor.RED,
+    ];
+    for (let i = 0; i < ROOMS_V; i++) {
+      for (let j = 0; j < ROOMS_H; j++) {
+        this.rooms.push(
+          new RoomModel(
+            this,
+            this.buildRoomPrototype(roomColors[Math.floor(Math.random() * roomColors.length)]),
+            j,
+            i,
+          ),
+        );
+      }
+    }
+    let roomCheck = false;
+    for (let i = 0; i < this.rooms.length; i++) {
+      if (i < this.rooms.length - 1) roomCheck = this.isNeighbors(this.rooms[i], this.rooms[i + 1]);
+      else roomCheck = false;
+      if (roomCheck) {
+        this.addDoorHorizontal(
+          this.rooms[i],
+          this.rooms[i + 1],
+          Math.random() < 0.5 ? true : false,
+        );
+        //if (i >= ROOMS_V)
+        //this.addDoorVertical(this.rooms[i], this.rooms[i + 1], (Math.random() < 0.5 ? true : false));
+      }
+    }
+    //this.addDoorHorizontal(this.rooms[0], this.rooms[1], true);
+    this.addDoorVertical(this.rooms[1], this.rooms[5], true);
+
+    /*this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.GREEN), 0, 0));
     this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.GRAY), 1, 0));
     this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.BLACK), -1, 0));
     this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.YELLOW), 0, -1));
@@ -47,7 +85,7 @@ export class Level extends EventEmitter {
     this.addDoorHorizontal(this.rooms[0], this.rooms[1], true);
     // this.addDoorHorizontal(this.rooms[2], this.rooms[0], true);
     this.addDoorVertical(this.rooms[3], this.rooms[0], true);
-    this.addDoorVertical(this.rooms[0], this.rooms[4], false);
+    this.addDoorVertical(this.rooms[0], this.rooms[4], false);*/
   }
 
   public findRoom(x: number, y: number): RoomModel {
