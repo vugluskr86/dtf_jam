@@ -144,3 +144,19 @@ export function drunkardWalk(
   }
   return map;
 }
+
+export function arrayRand<T>(input: T[]): T {
+  return input[Math.floor(Math.random() * input.length)];
+}
+
+export function weightedRand(spec: any): number {
+  let sum = 0;
+  const r = Math.random();
+  // tslint:disable-next-line: forin
+  for (const i in spec) {
+    sum += spec[i];
+    if (r <= sum) {
+      return parseFloat(i);
+    }
+  }
+}

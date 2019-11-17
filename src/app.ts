@@ -6,6 +6,7 @@ import { RoomModel, eRoomColor } from '@models/Room';
 import { Hud } from '@app/hud/Hud';
 import { Level } from '@models/Level';
 import './app/styles';
+import { ResourcesShared } from '@app/ResourcesShared';
 
 class Game {
   private app: Application;
@@ -27,7 +28,7 @@ class Game {
     });
     document.body.appendChild(this.app.view);
 
-    this.loader = new Loader();
+    this.loader = Loader.shared;
 
     this.viewport = new Viewport({
       interaction: this.app.renderer.plugins.interaction,
@@ -73,15 +74,27 @@ class Game {
   }
 
   private onLoadFirstStep(): void {
-    // const actors: any = this.loader.resources['data_actors'].data;
+    const actors: any = this.loader.resources['data_actors'].data;
+    const ceils: any = actors.ceil;
 
-    this.setup();
+    ceils.forEach((name: string) => {
+      const key: string = `actors_ceil_${name}`;
+      ResourcesShared.actorsCeil.push(key);
+      this.loader.add(key, `/assets/img/objects/ceil/${name}.png`);
+    });
+
+    this.loader.once('complete', () => {
+      this.setup();
+    });
+
+    this.loader.load();
   }
 
   private setup(): void {
     this.setupRooms();
     this.setupCharacter();
     this.setupHUD();
+
     /*
     //  animate hero
     let moveLeft = true;
