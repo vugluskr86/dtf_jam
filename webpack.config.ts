@@ -27,6 +27,10 @@ module.exports = {
         use: 'file-loader',
       },
       {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader'],
+      },
+      {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
@@ -46,7 +50,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.css'],
+    extensions: ['.tsx', '.ts', '.js', '.css', '.less'],
     plugins: [
       new TsconfigPathsPlugin({
         configFile: './tsconfig.json',

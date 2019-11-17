@@ -93,7 +93,7 @@ export class RoomModel {
           const dHp: number = randomInt(5, 10);
           this.level.character.hp -= dHp;
           this.level.character.mind -= dMind;
-          toastr.warning(
+          toastr.success(
             `Вам не удалось сбежать от монстра. Здоровье: -${dHp} Рассудок: -${dMind}`,
           );
           return;
@@ -114,7 +114,7 @@ export class RoomModel {
       this.level.character.mind -= dMindNextRoom;
       this.level.character.hunger -= dHungerNextRoom;
 
-      toastr.warning(
+      toastr.success(
         `Вы перешли в другую комнату. Сытость: -${dHungerNextRoom} Рассудок: -${dMindNextRoom}`,
       );
 
@@ -156,7 +156,7 @@ export class RoomModel {
   public onInteractActor(actor: Actor, level: Room): void {
     this.level.character.mind--;
 
-    toastr.warning(`Вы произвели дейтсвие: Рассудок -1`);
+    toastr.success(`Вы произвели дейтсвие: Рассудок -1`);
 
     const rand37: number = randomInt(3, 7);
     const rand15: number = randomInt(1, 5);
@@ -165,37 +165,37 @@ export class RoomModel {
       case eActorTypes.ALTAR_ALL: {
         this.level.character.mind += rand37;
         this.level.character.hp += rand37;
-        toastr.warning(
+        toastr.success(
           `Алтарь восполняет ваше состояние: Здоровье: +${rand37} Рассудок: +${rand37}`,
         );
         break;
       }
       case eActorTypes.ALTAR_MIND: {
         this.level.character.mind += rand37;
-        toastr.warning(`Алтарь восполняет ваше состояние: Рассудок: +${rand37}`);
+        toastr.success(`Алтарь восполняет ваше состояние: Рассудок: +${rand37}`);
         break;
       }
       case eActorTypes.ALTAR_HP: {
         this.level.character.hp += rand37;
-        toastr.warning(`Алтарь восполняет ваше состояние: Здоровье: +${rand37}`);
+        toastr.success(`Алтарь восполняет ваше состояние: Здоровье: +${rand37}`);
         break;
       }
       case eActorTypes.FOUNTAIN_ALL: {
         this.level.character.mind += rand15;
         this.level.character.hp += rand15;
-        toastr.warning(
+        toastr.success(
           `Фонтан восполняет ваше состояние: Здоровье: +${rand15} Рассудок: +${rand15}`,
         );
         break;
       }
       case eActorTypes.FOUNTAIN_HP: {
         this.level.character.hp += rand15;
-        toastr.warning(`Фонтан восполняет ваше состояние: Рассудок: +${rand15}`);
+        toastr.success(`Фонтан восполняет ваше состояние: Рассудок: +${rand15}`);
         break;
       }
       case eActorTypes.FOUNTAIN_MIND: {
         this.level.character.mind += rand15;
-        toastr.warning(`Фонтан восполняет ваше состояние: Рассудок: +${rand15}`);
+        toastr.success(`Фонтан восполняет ваше состояние: Рассудок: +${rand15}`);
         break;
       }
       case eActorTypes.TRAP_GAS: {
@@ -213,21 +213,21 @@ export class RoomModel {
       case eActorTypes.TREASURE_SMALL: {
         const randCoins: number = randomInt(1, 100);
         this.level.character.coins += randCoins;
-        toastr.warning(`Вы нашли ${randCoins} монет`);
+        toastr.success(`Вы нашли ${randCoins} монет`);
         this.removeActor(actor, level);
         break;
       }
       case eActorTypes.TREASURE_MIDDLE: {
         const randCoins: number = randomInt(50, 100);
         this.level.character.coins += randCoins;
-        toastr.warning(`Вы нашли ${randCoins} монет`);
+        toastr.success(`Вы нашли ${randCoins} монет`);
         this.removeActor(actor, level);
         break;
       }
       case eActorTypes.TREASURE_LARGE: {
         const randCoins: number = randomInt(100, 200);
         this.level.character.coins += randCoins;
-        toastr.warning(`Вы нашли ${randCoins} монет`);
+        toastr.success(`Вы нашли ${randCoins} монет`);
         this.removeActor(actor, level);
         break;
       }

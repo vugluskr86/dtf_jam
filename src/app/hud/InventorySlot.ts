@@ -36,7 +36,6 @@ export class InventorySlot extends Container {
     if (type) {
       this.icon = new Sprite(Loader.shared.resources[type].texture);
       this.addChild(this.icon);
-      // const model: IItemModel = InventorySlot.getItemModel(type);
     }
   }
 }
