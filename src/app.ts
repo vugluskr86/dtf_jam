@@ -9,6 +9,8 @@ import './app/styles';
 import { ResourcesShared } from '@app/ResourcesShared';
 import { ICharacterModel } from '@models/Character';
 import { eItemTypes } from '@models/Item';
+import { IDoorModel } from '@models/Door';
+import { Door } from '@app/entities/Door';
 
 class Game {
   private app: Application;
@@ -52,9 +54,11 @@ class Game {
     // preload needed assets
     this.loader.add('hero', '/assets/img/hero.png');
     this.loader.add('slot_vehumet', '/assets/img/slot_vehumet.png');
+    this.loader.add('closed_door', '/assets/img/closed_door.png');
+    this.loader.add('open_door', '/assets/img/open_door.png');
+    this.loader.add('stone_stairs_down', '/assets/img/stone_stairs_down.png');
     this.loader.add('items', '/assets/data/items.json');
     this.loader.add('actors', '/assets/data/actors.json');
-    // this.loader.add('data_rooms', '/assets/data/rooms.json');
 
     const roomColors = Object.values(eRoomColor);
     for (const colorIndex in roomColors) {
@@ -108,20 +112,6 @@ class Game {
     this.setupRooms();
     this.setupCharacter();
     this.setupHUD();
-
-    /*
-    //  animate hero
-    let moveLeft = true;
-    this.app.ticker.add(() => {
-      const speed = 2;
-      if (heroSprite.x < this.app.view.width && moveLeft) {
-        heroSprite.x += speed;
-      } else {
-        heroSprite.x -= speed;
-        moveLeft = heroSprite.x <= 0;
-      }
-    });
-    */
   }
 
   private setupHUD(): void {
@@ -156,6 +146,10 @@ class Game {
     this.level.roomsList.forEach((room: RoomModel) => {
       this.spawnRoom(room);
     });
+
+    this.level.doorsList.forEach((door: IDoorModel) => {
+      this.spawnDoor(door);
+    });
   }
 
   private spawnRoom(model: RoomModel): Room {
@@ -166,6 +160,30 @@ class Game {
     room.x = model.x * (Room.SPRITE_WIDTH + this.roomViewSettings.paddingWidth);
     room.y = model.y * (Room.SPRITE_HIGHT + this.roomViewSettings.paddngHeight);
     return room;
+  }
+
+  private spawnDoor(model: IDoorModel): Door {
+    let door: Door = new Door(model);
+
+    if (model.left && model.right) {
+      door = new Door(model);
+      door.x = model.right.x * (Room.SPRITE_WIDTH + this.roomViewSettings.paddingWidth) - 4;
+      door.y =
+        model.right.y * (Room.SPRITE_HIGHT + this.roomViewSettings.paddngHeight) +
+        Room.SPRITE_HIGHT / 2 +
+        door.height / 2;
+    } else if (model.top && model.bottom) {
+      door = new Door(model);
+      door.x =
+        model.bottom.x * (Room.SPRITE_WIDTH + this.roomViewSettings.paddingWidth) +
+        Room.SPRITE_WIDTH / 2;
+      door.y = model.bottom.y * (Room.SPRITE_HIGHT + this.roomViewSettings.paddngHeight) - 8;
+    }
+
+    if (door) {
+      this.viewport.addChild(door);
+      return door;
+    }
   }
 
   private moveCharaterToRoom(model: RoomModel): void {

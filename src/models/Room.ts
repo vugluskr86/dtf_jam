@@ -53,7 +53,7 @@ export class RoomModel {
   }
 
   public onIntreact(): void {
-    if (this.level.isNeighborsWithCurrent(this)) {
+    if (this.level.isPass(this)) {
       this.level.moveCharacter(this);
     }
   }

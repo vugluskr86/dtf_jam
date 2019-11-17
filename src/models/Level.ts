@@ -1,24 +1,21 @@
 import { IRoomPrototype, RoomModel, eRoomColor, eRoomType } from './Room';
 import { /*ITreeNode, createTree,*/ getRandomElementOfEnum } from '@app/Utils';
 import { EventEmitter } from 'events';
-
-// type RoomNode = ITreeNode<RoomModel>;
+import { IDoorModel } from './Door';
 
 export class Level extends EventEmitter {
   public static MAX_ROOMS: number = 50;
-  // private root: RoomNode;
 
   private rooms: RoomModel[] = [];
   private currentRoom: RoomModel = null;
-
-  /*
-  public get rootRoom(): RoomNode {
-    return this.root;
-  }
-  */
+  private doors: IDoorModel[] = [];
 
   public get roomsList(): RoomModel[] {
     return this.rooms;
+  }
+
+  public get doorsList(): IDoorModel[] {
+    return this.doors;
   }
 
   public get current(): RoomModel {
@@ -32,27 +29,15 @@ export class Level extends EventEmitter {
 
   public build(): void {
     this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.GREEN), 0, 0));
-
     this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.GRAY), 1, 0));
-
+    this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.BLACK), -1, 0));
     this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.YELLOW), 0, -1));
-
     this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.RED), 0, 1));
 
-    this.rooms.push(new RoomModel(this, this.buildRoomPrototype(eRoomColor.BLACK), -1, 0));
-
-    /*
-    this.root = createTree<RoomModel>(
-      {
-        data: () => {
-          return this.buildRoom();
-        },
-        depth: 2,
-      },
-      null,
-      0,
-    );
-    */
+    this.addDoorHorizontal(this.rooms[0], this.rooms[1], true);
+    // this.addDoorHorizontal(this.rooms[2], this.rooms[0], true);
+    this.addDoorVertical(this.rooms[3], this.rooms[0], true);
+    this.addDoorVertical(this.rooms[0], this.rooms[4], false);
   }
 
   public findRoom(x: number, y: number): RoomModel {
@@ -79,11 +64,35 @@ export class Level extends EventEmitter {
     return this.currentRoom ? this.isNeighbors(a, this.currentRoom) : false;
   }
 
-  /*
-  private buildRoom(): RoomModel {
-    return new RoomModel(this.buildRoomPrototype(), 0, 0);
+  public isPass(a: RoomModel): boolean {
+    if (!this.isNeighborsWithCurrent(a)) {
+      return false;
+    }
+
+    const doorExisting: IDoorModel = this.doors.find((door: IDoorModel) => {
+      return (
+        (door.bottom === a || door.top === a || door.left === a || door.right === a) && door.open
+      );
+    });
+
+    return Boolean(doorExisting);
   }
-  */
+
+  private addDoorHorizontal(left: RoomModel, right: RoomModel, open: boolean): void {
+    this.doors.push({
+      left,
+      right,
+      open,
+    });
+  }
+
+  private addDoorVertical(top: RoomModel, bottom: RoomModel, open: boolean): void {
+    this.doors.push({
+      top,
+      bottom,
+      open,
+    });
+  }
 
   private buildRoomPrototype(color?: eRoomColor, type?: eRoomType): IRoomPrototype {
     return {
