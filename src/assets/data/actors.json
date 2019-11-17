@@ -1,0 +1,49 @@
+{
+  "_data": {
+    "ceil": ["misc_lamp_inert", "misc_lamp_new", "misc_lantern"],
+    "floor": [
+      {
+        "name": "ru_altar",
+        "mind": 5,
+        "hp": 5
+      },
+      {
+        "name": "misc_altar",
+        "mind": 5
+      },
+      {
+        "name": "gozag_altar",
+        "hp": 5
+      }
+    ],
+    "wall": [
+      {
+        "name": "dry_fountain",
+        "mind": 3,
+        "hp": 3
+      },
+      {
+        "name": "blue_fountain",
+        "mind": 3
+      },
+      {
+        "name": "blood_fountain",
+        "hp": 3
+      },
+      "mold_glowing_1",
+      "mold_glowing_2",
+      "mold_glowing_3",
+      "mold_glowing_4"
+    ],
+    "monsters": [
+      "anubis_guard",
+      "big_kobold_new",
+      "cyclops_new",
+      "deep_troll",
+      "formicid",
+      "giant_orange_brain",
+      "orb_guardian_old",
+      "tengu"
+    ]
+  }
+}
