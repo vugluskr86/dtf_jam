@@ -30,6 +30,13 @@ class Game {
       height: 720,
       width: 1280,
     });
+
+    const pEl = document.createElement('p');
+    pEl.className = 'readme';
+    // tslint:disable-next-line: max-line-length
+    pEl.innerText =
+      'Пытаясь выбраться из заброшенного подземелья, вы постепенно теряете рассудок. Продержитесь как можно дольше, избегайте монстров и ловушек. Открывайте новые комнаты. Используйте алтари и фонтаны для восстановления своих характеристик. Помните что в некоторых сундука можно найти полезные предметы и даже неплохо на этом заработать. Вы неизбежно умрете. Удачи.';
+    document.body.appendChild(pEl);
     document.body.appendChild(this.app.view);
 
     this.loader = Loader.shared;
