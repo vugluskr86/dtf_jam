@@ -1,4 +1,4 @@
-import { Container, TextStyle } from 'pixi.js';
+import { Container, Sprite, TextStyle } from 'pixi.js';
 import { ProgressBar } from './ProgressBar';
 import { ICharacterModel } from '@models/Character';
 import { Fonts } from './Fonts';
@@ -7,6 +7,11 @@ export class Hud extends Container {
   private progrssHP: ProgressBar;
   private progrssMind: ProgressBar;
   private progrssHunger: ProgressBar;
+
+  private itemCell0: Sprite;
+  private itemCell1: Sprite;
+  private itemCell2: Sprite;
+  private itemCell3: Sprite;
 
   constructor() {
     super();

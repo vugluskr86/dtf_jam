@@ -1,5 +1,5 @@
 {
-  "chests": [{ "name": "chest" }, { "name": "chest_2_closed" }, { "name": "large_box" }],
+  "treasures": [{ "name": "chest" }, { "name": "chest_2_closed" }, { "name": "large_box" }],
   "potions": [
     {
       "name": "heal",
@@ -12,7 +12,7 @@
       "price": 1
     }
   ],
-  "treasures": [
+  "rewards": [
     {
       "name": "coin",
       "price": 1

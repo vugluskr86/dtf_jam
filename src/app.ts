@@ -79,9 +79,9 @@ class Game {
     this.loadAssets('actors', 'wall');
     this.loadAssets('actors', 'monsters');
 
-    this.loadAssets('items', 'chests');
-    this.loadAssets('items', 'potions');
     this.loadAssets('items', 'treasures');
+    this.loadAssets('items', 'potions');
+    this.loadAssets('items', 'rewards');
 
     this.loader.once('complete', () => {
       this.setup();
